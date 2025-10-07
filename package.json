@@ -1,0 +1,70 @@
+{
+  "name": "karin-plugin-yysls",
+  "version": "1.0.0",
+  "author": "babanbang",
+  "type": "module",
+  "description": "karin plugin yysls",
+  "homepage": "https://github.com/babanbang/karin-plugin-yysls",
+  "bugs": {
+    "url": "https://github.com/babanbang/karin-plugin-yysls/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/babanbang/karin-plugin-yysls.git"
+  },
+  "scripts": {
+    "app": "node lib/app.js",
+    "build": "tsup",
+    "dev": "cross-env EBV_FILE=\"development.env\" node --import tsx src/app.ts",
+    "pub": "npm publish --access public"
+  },
+  "main": "lib/index.js",
+  "dependencies": {
+    "md5": "^2.3.0",
+    "sequelize": "^6.37.7"
+  },
+  "devDependencies": {
+    "@karinjs/plugin-puppeteer": "^1.0.18",
+    "@types/express": "^5.0.1",
+    "@types/lodash": "^4.17.16",
+    "@types/node": "^20.17.8",
+    "cross-env": "^7.0.3",
+    "eslint": "^9.7.0",
+    "neostandard": "^0.11.9",
+    "node-karin": "^1.11.3",
+    "tsup": "^8.5.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.5.3"
+  },
+  "karin": {
+    "main": "src/index.ts",
+    "apps": [
+      "lib/apps"
+    ],
+    "ts-apps": [
+      "src/apps"
+    ],
+    "web": "./lib/web.config.js",
+    "ts-web": "./src/web.config.ts",
+    "static": [
+      "resources"
+    ],
+    "files": [
+      "config",
+      "data",
+      "resources"
+    ]
+  },
+  "files": [
+    "/lib/**/*.js",
+    "/lib/**/*.d.ts",
+    "resources",
+    "!resources/**/*.css.map",
+    "!resources/**/*.scss",
+    "!lib/app.js"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
+  }
+}

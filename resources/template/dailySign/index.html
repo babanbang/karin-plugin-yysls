@@ -1,0 +1,71 @@
+{{extend plugin.defaultLayout}}
+
+{{block 'css'}}
+<link rel="stylesheet" type="text/css" href="{{plugin.resources.default}}/template/dailySign/index.css" />
+{{if signList.length > 1}}
+<style>
+  .container {
+    background-position-y: 250px, 0px;
+  }
+</style>
+{{/if}}
+{{/block}}
+
+{{block 'main'}}
+<span class="logo"></span>
+
+<div class="daily-sign-list">
+
+  <div class="sign-info-item">
+    <div class="name"> 角色</div>
+    <div class="rewards">签到奖励</div>
+    <span class="days">本月累签</span>
+  </div>
+
+  {{each signList sign}}
+  <div class="sign-info-item">
+
+    <div class="name">
+      <img class="avatar" src="{{plugin.resources.download}}/images/avatar/{{sign.uidInfo.avatar}}.png" />
+      {{sign.uidInfo.name}} ({{sign.uidInfo.uid}})
+    </div>
+
+    <div class="rewards">
+      {{each sign.signInfo.rewards reward}}
+      <div class="item">
+        <img class="icon" src="{{plugin.resources.default}}/image/reward/{{reward.name}}.png" />
+        {{reward.name}} *{{reward.num}}
+      </div>
+      {{/each}}
+    </div>
+
+    <span class="days">{{sign.signInfo.days}}</span>
+
+  </div>
+  {{/each}}
+
+</div>
+
+<div class="month-reward">
+  <span class="title">{{month}}累签奖励</span>
+
+  {{each cumulativeFigList cumulativeFig}}
+  <div
+    class="reward-box color-{{cumulativeFig.reward.color}}{{if cumulativeFig.AttainList && cumulativeFig.AttainList.length}} isSign{{/if}}">
+    <img class="icon" src="{{plugin.resources.default}}/image/reward/{{cumulativeFig.reward.name}}.png" />
+
+    <div class="sign-avatar">
+      {{each cumulativeFig.AttainList user}}
+      <!-- <span class="name">{{user.name}}</span> -->
+      <img class="avatar" src="{{plugin.resources.download}}/images/avatar/{{user.avatar}}.png" />
+      {{/each}}
+    </div>
+
+    <span class="num">*{{cumulativeFig.reward.num}}</span>
+
+    <span class="days">累签{{cumulativeFig.days}}天</span>
+  </div>
+  {{/each}}
+
+</div>
+{{/block}}
