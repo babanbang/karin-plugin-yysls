@@ -56,6 +56,7 @@
     ]
   },
   "files": [
+    "LICENSE",
     "/lib/**/*.js",
     "/lib/**/*.d.ts",
     "resources",
