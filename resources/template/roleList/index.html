@@ -1,0 +1,51 @@
+<!-- karin plugin yysls default layout -->
+{{extend plugin.defaultLayout}}
+
+<!-- 页面样式资源 -->
+{{block 'css'}}
+<link rel="stylesheet" type="text/css" href="{{plugin.resources.default}}/template/{{plugin.template}}/index.css" />
+
+{{/block}}
+
+<!-- 页面布局内容 -->
+{{block 'container'}}
+<span class="logo"></span>
+
+<div class="role-list">
+  <div class="title">绑定角色列表</div>
+
+  {{each roleList role idx}}
+  <div class="role-list-item">
+    <span class="index {{role.main ? 'main' : 'normal'}}">{{idx + 1}}</span>
+
+    <span class="avatar">
+      <img src="{{plugin.resources.download}}/images/avatar/{{role.avatar}}.png" />
+    </span>
+
+    <div class="info">
+      <div class="primary">
+        <span class="nickname">{{role.name}}</span>
+        <span class="level">Lv.{{role.level}}</span>
+      </div>
+
+      <div class="uid">
+        UID: {{role.uid}}
+
+        {{if role.club}}
+        <span class="club">{{role.club}}</span>
+        {{/if}}
+      </div>
+    </div>
+  </div>
+  {{/each}}
+
+</div>
+
+{{/block}}
+
+<!-- 页面脚本资源 -->
+{{block 'script'}}
+<script>
+
+</script>
+{{/block}}

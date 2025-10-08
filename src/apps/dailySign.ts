@@ -2,7 +2,7 @@ import { dailySign, getCumulativeFigData } from '@/core/api'
 import { Command } from '@/core/command'
 import { CommandCfg } from '@/core/config'
 import { User } from '@/core/user'
-import { CommandEnum, CumulativeFigListItem, signInfoType } from '@/types/app'
+import { CommandEnum, CumulativeFigListItem, signInfoType } from '@/types/apps'
 import { CumulativeFigItem } from '@/types/core'
 import { UidInfoType } from '@/types/core/user'
 import { renderTemplate } from '@/utils'
@@ -93,7 +93,7 @@ export const DailySign = karin.command(
     }
 
     if (renderData.signList.length > 0) {
-      const image = await renderTemplate('dailySign', renderData)
+      const image = await renderTemplate(CommandEnum.DailySign, renderData)
 
       await e.reply(segment.image(image), { at: true })
     }
@@ -116,24 +116,23 @@ const Sign = async (uidInfo: UidInfoType): Promise<{
     case -1:
       return { success: false, msg: 'access_token已过期，请重新绑定！' }
     case -100044:
-      return { success: false, msg: '今日已签到，明天再来吧！' }
     case 200: {
       const cumulativeFigData = await getCumulativeFigData.new(uidInfo).request(null)
 
       const cumulativeFigList = cumulativeFigData.data?.cumulativeFigList ?? []
-      const maxAttainedDays = lodash.maxBy(
+      const maxAttained = lodash.maxBy(
         lodash.filter(cumulativeFigList, item => item.isAttain),
         'days'
-      )?.days ?? 0
+      )
 
       return {
         success: true,
         msg: '签到成功！',
         data: {
           signInfo: {
-            days: maxAttainedDays,
-            integral: signResult.data.integral,
-            rewards: signResult.data.rewardCalendarVos.map(item => {
+            days: maxAttained!.days,
+            integral: signResult.data?.integral ?? 0,
+            rewards: maxAttained!.calendarVoList.map(item => {
               const split = item.prizeName.split('*')
 
               return {

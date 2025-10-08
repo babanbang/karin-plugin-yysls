@@ -13,6 +13,9 @@ const DefaultCommand: CommandType = {
   [CommandEnum.DailySign]: {
     cmds: ['燕云(十六升)?签到'], enable: true, default: true, flags: false
   },
+  [CommandEnum.RoleList]: {
+    cmds: ['燕云(十六升)?(角色列表|uid)'], enable: true, default: true, flags: false
+  },
   [CommandEnum.GameInfo]: {
     cmds: ['燕云(十六升)?角色信息'], enable: true, default: true, flags: false
   }

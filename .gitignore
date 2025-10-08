@@ -121,6 +121,7 @@ build
 
 # Optional VS Code files
 .vscode/*
+!.vscode/*.json.code-snippets
 !.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json

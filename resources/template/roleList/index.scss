@@ -1,0 +1,162 @@
+.container {
+  background-color: rgb(139, 141, 156);
+  background-image: url('../../image/icon/bg.webp'), url('../../image/icon/kv.webp');
+  background-repeat: no-repeat;
+  background-position: center, top center;
+  background-size: 100% auto, 100% auto;
+  background-position-y: 280px, -50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 70px 0;
+  box-sizing: border-box;
+  position: relative;
+
+  .logo {
+    position: absolute;
+    top: 0px;
+    right: 30px;
+    width: 160px;
+    height: 80px;
+    background-image: url('../../image/icon/logo.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    display: block;
+    z-index: 2;
+  }
+
+  .role-list {
+    width: 95%;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    z-index: 1;
+    position: relative;
+    background: rgba(31, 35, 63, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 18px;
+    box-shadow: 0 10px 18px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(4px);
+    padding: 40px 10px 20px 10px;
+
+    .title {
+      position: absolute;
+      top: -1px;
+      left: -1px;
+      width: calc(100% + 2px);
+      padding: 5px;
+      background-color: rgba(218, 174, 113, 0.8);
+      border-radius: 18px 18px 0 0;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    .role-list-item {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      color: #f3f4f9;
+      padding: 0 8px;
+      background: rgba(92, 94, 110, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 18px;
+      box-shadow: 0 10px 18px rgba(0, 0, 0, 0.2);
+
+      .index {
+        flex-shrink: 0;
+        width: 25px;
+        height: 25px;
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        font-weight: 700;
+        background: rgba(255, 255, 255, 0.18);
+        border: 2px solid rgba(255, 255, 255, 0.25);
+      }
+
+      .index.main {
+        background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+        color: #472a05;
+        border-color: rgba(255, 221, 140, 0.8);
+      }
+
+      .role-list-item .index.normal {
+        color: #565252;
+      }
+
+      .avatar {
+        width: 74px;
+        height: 74px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        object-fit: cover;
+        background-image: url('../../image/icon/avatar-bg.png');
+        background-repeat: no-repeat;
+        background-size: cover;
+
+        img {
+          width: 48px;
+          height: 48px;
+          border-radius: 50%;
+        }
+      }
+
+      .info {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        flex: 1;
+
+        .primary {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          flex-wrap: wrap;
+
+          .nickname {
+            width: 130px;
+            font-size: 18px;
+            font-weight: 600;
+            color: #ffffff;
+            letter-spacing: 0.5px;
+          }
+
+          .level {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 10px;
+            border-radius: 999px;
+            font-size: 14px;
+            font-weight: 600;
+            background: linear-gradient(135deg, #ffe082, #ffca28);
+            color: #5c4100;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4);
+          }
+        }
+
+
+        .uid {
+          font-size: 16px;
+          color: rgba(243, 244, 249, 0.8);
+          letter-spacing: 0.3px;
+
+          .club {
+            margin-left: 11px;
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 10px;
+            border-radius: 999px;
+            font-size: 14px;
+            font-weight: 600;
+            background: rgba(126, 199, 255, 0.9);
+            color: #0e3a5f;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35);
+          }
+        }
+      }
+    }
+  }
+}

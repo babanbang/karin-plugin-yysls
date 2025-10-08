@@ -1,4 +1,4 @@
-import { CommandEnum } from '@/types/app'
+import { CommandEnum } from '@/types/apps'
 
 export type CommandType = Record<CommandEnum, CommandItem>
 

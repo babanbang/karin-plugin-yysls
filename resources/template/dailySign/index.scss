@@ -1,10 +1,14 @@
+:root {
+  --length: 0;
+}
+
 .container {
   background-color: rgb(139, 141, 156);
   background-image: url('../../image/icon/bg.webp'), url('../../image/icon/kv.webp');
   background-repeat: no-repeat;
   background-position: center, top center;
-  background-size: cover, contain;
-  background-position-y: 150px, 0px;
+  background-size: contain, contain;
+  background-position-y: calc(40px + (var(--length) * 60px)), 0px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -43,7 +47,7 @@
       align-items: center;
       justify-content: space-between;
       gap: 10px;
-      padding: 8px 10px;
+      padding: 0px 10px;
       background: rgba(255, 255, 255, 0.7);
       border: 1px solid rgba(0, 0, 0, 0.1);
       border-radius: 12px;
@@ -59,15 +63,27 @@
 
       .name {
         flex: 0 0 30%;
-        gap: 12px;
+        gap: 5px;
         font-size: 14px;
         font-weight: 600;
+        justify-content: flex-start;
 
         .avatar {
-          width: 40px;
-          height: 40px;
-          border-radius: 50%;
+          width: 55px;
+          height: 55px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
           object-fit: cover;
+          background-image: url('../../image/icon/avatar-bg.png');
+          background-repeat: no-repeat;
+          background-size: cover;
+
+          img {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+          }
         }
       }
 
@@ -81,7 +97,6 @@
           display: flex;
           align-items: center;
           gap: 5px;
-          padding: 8px 12px;
           background: rgba(247, 247, 247, 0.9);
           border-radius: 8px;
           min-width: 140px;
@@ -110,7 +125,6 @@
     flex-wrap: wrap;
     gap: 20px;
     position: relative;
-    padding-top: 8px;
 
     .title {
       flex-basis: 100%;

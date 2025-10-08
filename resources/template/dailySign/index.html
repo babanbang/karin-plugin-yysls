@@ -1,23 +1,23 @@
+<!-- karin plugin yysls default layout -->
 {{extend plugin.defaultLayout}}
 
+<!-- 页面样式资源 -->
 {{block 'css'}}
-<link rel="stylesheet" type="text/css" href="{{plugin.resources.default}}/template/dailySign/index.css" />
-{{if signList.length > 1}}
-<style>
-  .container {
-    background-position-y: 250px, 0px;
-  }
-</style>
-{{/if}}
+<link rel="stylesheet" type="text/css" href="{{plugin.resources.default}}/template/{{plugin.template}}/index.css" />
 {{/block}}
 
-{{block 'main'}}
+<!-- 页面布局内容 -->
+{{block 'container'}}
 <span class="logo"></span>
+
+<script>
+  document.documentElement.style.setProperty('--length', "{{signList.length}}" < 5 ? "{{signList.length}}" : 4);
+</script>
 
 <div class="daily-sign-list">
 
   <div class="sign-info-item">
-    <div class="name"> 角色</div>
+    <div class="name" style="justify-content: flex-start;"> 角色</div>
     <div class="rewards">签到奖励</div>
     <span class="days">本月累签</span>
   </div>
@@ -26,8 +26,11 @@
   <div class="sign-info-item">
 
     <div class="name">
-      <img class="avatar" src="{{plugin.resources.download}}/images/avatar/{{sign.uidInfo.avatar}}.png" />
-      {{sign.uidInfo.name}} ({{sign.uidInfo.uid}})
+      <div class="avatar">
+        <img src="{{plugin.resources.download}}/images/avatar/{{sign.uidInfo.avatar}}.png" />
+      </div>
+
+      {{sign.uidInfo.name}}<br>({{sign.uidInfo.uid}})
     </div>
 
     <div class="rewards">
@@ -68,4 +71,11 @@
   {{/each}}
 
 </div>
+{{/block}}
+
+<!-- 页面脚本资源 -->
+{{block 'script'}}
+<script>
+
+</script>
 {{/block}}

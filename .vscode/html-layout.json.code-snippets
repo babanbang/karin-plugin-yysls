@@ -1,0 +1,29 @@
+{
+  "yysls default layout": {
+    "prefix": "!yysls-default",
+    "description": "插入 Karin yysls 模版",
+    "body": [
+      "<!-- karin plugin yysls default layout -->",
+      "{{extend plugin.defaultLayout}}",
+      "",
+      "<!-- 页面样式资源 -->",
+      "{{block 'css'}}",
+      "<link rel=\"stylesheet\" type=\"text/css\" href=\"{{plugin.resources.default}}/template/{{plugin.template}}/index.css\" />",
+      "",
+      "{{/block}}",
+      "",
+      "<!-- 页面布局内容 -->",
+      "{{block 'container'}}",
+      "",
+      "{{/block}}",
+      "",
+      "<!-- 页面脚本资源 -->",
+      "{{block 'script'}}",
+      "<script>",
+      "",
+      "</script>",
+      "{{/block}}",
+      ""
+    ]
+  }
+}

@@ -20,6 +20,8 @@ export interface GameInfoResponse extends BaseApiReponse {
     onlineTime: number
     /** 门派ID */
     school: number
+    /** 风华值 */
+    fashionScore: number
   }
 }
 

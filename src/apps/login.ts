@@ -2,7 +2,7 @@ import { getGameInfo } from '@/core/api'
 import { Command } from '@/core/command'
 import { CommandCfg } from '@/core/config'
 import { User } from '@/core/user'
-import { CommandEnum } from '@/types/app'
+import { CommandEnum } from '@/types/apps'
 import karin from 'node-karin'
 
 const LoginCmd = Command.getCommand(CommandEnum.Login, '')
