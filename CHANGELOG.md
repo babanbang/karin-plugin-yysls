@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.3](https://github.com/babanbang/karin-plugin-yysls/compare/v1.0.2...v1.0.3) (2025-10-09)
+
+
+### Bug Fixes
+
+* 绑定成功时发送角色列表 ([9253de3](https://github.com/babanbang/karin-plugin-yysls/commit/9253de37364b7c570a4890d6154a1e141de1590a))
+
 ## [1.0.2](https://github.com/babanbang/karin-plugin-yysls/compare/v1.0.1...v1.0.2) (2025-10-08)
 
 
