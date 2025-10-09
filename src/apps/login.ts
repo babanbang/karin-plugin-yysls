@@ -4,6 +4,7 @@ import { CommandCfg } from '@/core/config'
 import { User } from '@/core/user'
 import { CommandEnum } from '@/types/apps'
 import karin from 'node-karin'
+import { showRoleList } from './gmeInfo'
 
 const LoginCmd = Command.getCommand(CommandEnum.Login, '')
 export const login = karin.command(
@@ -46,12 +47,12 @@ export const login = karin.command(
           const user = await User.create(e.userId, false)
 
           const roleId = gameInfo.data.roleId
-          user.saveUserInfo({
+          await user.saveUserInfo({
             mainUid: roleId,
             uidList: user.uidList.add(roleId, true)
           })
 
-          user.saveAccountInfo(roleId, {
+          await user.saveAccountInfo(roleId, {
             name: gameInfo.data.roleName,
             level: gameInfo.data.level,
             club: gameInfo.data.clubName,
@@ -59,7 +60,7 @@ export const login = karin.command(
             accessToken: token,
           })
 
-          await e.reply(`绑定角色成功：${gameInfo.data.roleName}\nUID：${roleId}`, { at: true })
+          await showRoleList(e)
         }
 
         return true

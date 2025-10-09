@@ -37,8 +37,8 @@ importers:
         specifier: ^0.11.9
         version: 0.11.9(eslint@9.36.0)(typescript@5.9.3)
       node-karin:
-        specifier: ^1.11.4
-        version: 1.11.4
+        specifier: ^1.11.5
+        version: 1.11.5
       tsup:
         specifier: ^8.5.0
         version: 8.5.0(tsx@4.20.6)(typescript@5.9.3)(yaml@2.7.0)
@@ -1329,8 +1329,8 @@ packages:
     peerDependencies:
       eslint: ^9.0.0
 
-  node-karin@1.11.4:
-    resolution: {integrity: sha512-qJMxpZz+trDXrT0wfZVjdR7yrWrhKiunH+UJ7LNwlcsnsMLEgiYLjYhgC3guHjF0Ho1en4ma92vLW3tBoaBp4A==}
+  node-karin@1.11.5:
+    resolution: {integrity: sha512-cP23tA9L/d2ttM3JAKTrgia/P4Zl9sWu9KTK1JwNxwkyrVXpA5cuZyAA7GHxKD4i+Gqlu6Usz7poRFXsuXWlSQ==}
     engines: {node: '>=18'}
     hasBin: true
 
@@ -3227,7 +3227,7 @@ snapshots:
       - supports-color
       - typescript
 
-  node-karin@1.11.4:
+  node-karin@1.11.5:
     dependencies:
       art-template: '@karinjs/art-template@1.1.0'
       axios: '@karinjs/axios@1.2.0'
