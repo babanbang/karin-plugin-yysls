@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.2](https://github.com/babanbang/karin-plugin-yysls/compare/v1.0.1...v1.0.2) (2025-10-08)
+
+
+### Bug Fixes
+
+* LICENSE ([d535026](https://github.com/babanbang/karin-plugin-yysls/commit/d535026fff1b0ee10020c88d64d0c368e584b48e))
+
 ## [1.0.1](https://github.com/babanbang/karin-plugin-yysls/compare/v1.0.0...v1.0.1) (2025-10-08)
 
 
