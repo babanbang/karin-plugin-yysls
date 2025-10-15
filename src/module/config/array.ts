@@ -19,12 +19,22 @@ export class EnhancedArray<T> extends Array<T> {
   }
 
   /**
+   * @param element - string | number
+   * @returns
+   */
+  has<U extends T & (string | number)> (element: U): boolean {
+    return new Set(this).has(element)
+  }
+
+  /**
    * @param isEqual 是否不添加重复元素
    * @param save 是否立即保存
    */
   add (element: T, isEqual: boolean, save: boolean): this {
-    if (isEqual && this.some(item => lodash.isEqual(item, element))) {
-      return this
+    if (isEqual) {
+      const existingSet = new Set(this.map(item => JSON.stringify(item)))
+
+      if (existingSet.has(JSON.stringify(element))) return this
     }
 
     this.push(element)
@@ -39,11 +49,11 @@ export class EnhancedArray<T> extends Array<T> {
    */
   addSome (elements: T[], isEqual: boolean, save: boolean): this {
     if (isEqual) {
-      elements = elements.filter(element => !this.some(item => lodash.isEqual(item, element)))
+      const existingSet = new Set(this.map(item => JSON.stringify(item)))
 
-      if (elements.length === 0) {
-        return this
-      }
+      elements = elements.filter(element => !existingSet.has(JSON.stringify(element)))
+
+      if (elements.length === 0) return this
     }
 
     this.push(...elements)

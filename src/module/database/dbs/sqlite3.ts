@@ -1,8 +1,8 @@
 import { dir } from '@/dir'
-import { json, logger } from 'node-karin'
+import { existsSync, json, logger, mkdirSync, rmSync } from 'node-karin'
 import fs from 'node:fs'
 import path from 'node:path'
-import { DataTypes, Model, ModelAttributeColumnOptions, Sequelize } from 'sequelize'
+import { DataTypes, Model, ModelAttributeColumnOptions, Op, Sequelize } from 'sequelize'
 import { DatabaseArray, DatabaseClassInstance, DatabaseClassStatic, DatabaseReturn, DatabaseType, Dialect, ModelAttributes } from '../types'
 import { DbBase } from './base'
 
@@ -55,21 +55,25 @@ export class Sqlite3<T extends Record<string, any>, D extends DatabaseType> exte
   async findByPk (pk: string, create: boolean = false): Promise<DatabaseReturn<T>[D] | undefined> {
     if (this.databaseType !== DatabaseType.Db) {
       const path = this.userPath(pk)
-      if (!fs.existsSync(path)) {
+      if (!existsSync(path)) {
         if (create) {
           const data = this.schemaToJSON(pk)
           if (this.databaseType === DatabaseType.Dir) {
-            fs.mkdirSync(path)
+            mkdirSync(path)
             this.writeDirSync(pk, data)
 
             return {
-              ...data, save: this.saveDir(pk)
+              ...data,
+              save: this.saveDir(pk),
+              destroy: () => this.destroyPath(pk)
             } as DatabaseReturn<T>[D]
           } else {
             json.writeSync(path, data)
 
             return {
-              ...data, save: this.saveFile(pk)
+              ...data,
+              save: this.saveFile(pk),
+              destroy: () => this.destroyPath(pk)
             } as DatabaseReturn<T>[D]
           }
         }
@@ -91,7 +95,8 @@ export class Sqlite3<T extends Record<string, any>, D extends DatabaseType> exte
 
       return {
         ...result.toJSON<T>(),
-        save: this.saveSql(result, pk)
+        save: this.saveSql(result, pk),
+        destroy: () => this.destroySql(pk)
       }
     }
   }
@@ -101,7 +106,7 @@ export class Sqlite3<T extends Record<string, any>, D extends DatabaseType> exte
       const result: DatabaseReturn<T>[D][] = []
       pks.forEach((pk) => {
         const path = this.userPath(pk)
-        if (fs.existsSync(path)) {
+        if (existsSync(path)) {
           if (this.databaseType === DatabaseType.Dir) {
             result.push(this.readDirSync(pk) as DatabaseReturn<T>[D])
           } else {
@@ -117,21 +122,61 @@ export class Sqlite3<T extends Record<string, any>, D extends DatabaseType> exte
           [this.model.primaryKeyAttribute]: pks
         }
       })
+
       return result.map((item) => ({
         ...item.toJSON<T>(),
-        save: this.saveSql(item, item[this.model.primaryKeyAttribute as keyof Model<any, any>])
+        save: this.saveSql(item, item[this.model.primaryKeyAttribute as keyof Model<any, any>]),
+        destroy: () => this.destroySql(item[this.model.primaryKeyAttribute as keyof Model<any, any>])
+      }))
+    }
+  }
+
+  async findAll (excludePks?: string[]): Promise<DatabaseReturn<T>[D][]> {
+    const excludeSet = new Set(excludePks || [])
+
+    if (this.databaseType !== DatabaseType.Db) {
+      const result: DatabaseReturn<T>[D][] = []
+      const files = fs.readdirSync(this.databasePath)
+
+      if (this.databaseType === DatabaseType.Dir) {
+        files.forEach((file) => {
+          if (excludeSet.has(file)) return
+
+          const stat = fs.statSync(path.join(this.databasePath, file))
+          if (stat.isDirectory()) {
+            result.push(this.readDirSync(file) as DatabaseReturn<T>[D])
+          }
+        })
+      } else {
+        files.forEach((file) => {
+          if (!file.endsWith('.json')) return
+
+          const pk = file.replace('.json', '')
+          if (excludeSet.has(pk)) return
+
+          result.push(this.readSync(this.userPath(pk), pk) as DatabaseReturn<T>[D])
+        })
+      }
+
+      return result
+    } else {
+      const whereClause = excludePks && excludePks.length > 0
+        ? { [this.model.primaryKeyAttribute]: { [Op.notIn]: excludePks } }
+        : {}
+
+      const result = await this.model.findAll({ where: whereClause })
+
+      return result.map((item) => ({
+        ...item.toJSON<T>(),
+        save: this.saveSql(item, item[this.model.primaryKeyAttribute as keyof Model<any, any>]),
+        destroy: () => this.destroySql(item[this.model.primaryKeyAttribute as keyof Model<any, any>])
       }))
     }
   }
 
   async destroy (pk: string): Promise<boolean> {
     if (this.databaseType !== DatabaseType.Db) {
-      const path = this.userPath(pk)
-      if (this.databaseType === DatabaseType.Dir) {
-        fs.rmdirSync(path, { recursive: true })
-      } else {
-        fs.unlinkSync(path)
-      }
+      rmSync(this.userPath(pk), { recursive: true })
 
       return true
     } else {
@@ -190,7 +235,7 @@ export const Sqlite3Static = new class Sqlite3Static implements DatabaseClassSta
         }
         return data
       },
-      set (data: { [key in string]: any }) {
+      set (data: T) {
         this.setDataValue(key, JSON.stringify(data))
       }
     }

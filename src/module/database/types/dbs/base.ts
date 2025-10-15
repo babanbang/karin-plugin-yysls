@@ -29,12 +29,15 @@ export type ModelAttributes<M extends Model = Model, TAttributes = any> = {
 export interface DatabaseReturn<T> {
   [DatabaseType.Db]: T & {
     save: (data: Partial<T>) => Promise<DatabaseReturn<T>[DatabaseType.Db]>
+    destroy: () => Promise<boolean>
   }
   [DatabaseType.File]: T & {
     save: (data: T) => Promise<DatabaseReturn<T>[DatabaseType.File]>
+    destroy: () => Promise<boolean>
   }
   [DatabaseType.Dir]: T & {
     save: (data: T) => Promise<DatabaseReturn<T>[DatabaseType.Dir]>
+    destroy: () => Promise<boolean>
   }
 }
 
@@ -44,17 +47,17 @@ export type DatabaseClassInstance<T extends Record<string, any>, D extends Datab
   databasePath: string
   databaseType: D
 
-  /** 表名 */
+  /** @description 表名 */
   modelName: string
 
-  /** 表定义 */
+  /** @description 表定义 */
   modelSchema: ModelAttributes<Model>
 
-  /** 检查数据库是否可用 */
+  /** @description 检查数据库是否可用 */
   check (): Promise<boolean>
 
   /**
-   * 初始化表
+   * @description 初始化表
    * @param DataDir 插件数据目录
    * @param modelName 表名
    * @param modelSchema 表定义
@@ -62,47 +65,53 @@ export type DatabaseClassInstance<T extends Record<string, any>, D extends Datab
    */
   init (DataDir: string, modelName: string, modelSchema: Record<keyof T, ModelAttributeColumnOptions<Model>>, type: D): Promise<DatabaseClassInstance<T, D>>
 
-  /** 将表定义转换为 JSON 对象 */
+  /** @description 将表定义转换为 JSON 对象 */
   schemaToJSON (pk: string): T
 
-  /** 获取用户数据文件路径 */
+  /** @description 获取用户数据文件路径 */
   userPath (pk: string): string
 
-  /** 根据主键读取用户数据文件 */
+  /** @description 根据主键读取用户数据文件 */
   readSync (path: string, pk: string): DatabaseReturn<T>[DatabaseType.File]
 
-  /** 根据主键读取用户数据目录 */
+  /** @description 根据主键读取用户数据目录 */
   readDirSync (pk: string): DatabaseReturn<T>[DatabaseType.Dir]
 
-  /** 写入用户数据目录 */
+  /** @description 写入用户数据目录 */
   writeDirSync (pk: string, data: Record<string, any>): boolean
 
-  /** 保存用户数据到文件 */
+  /** @description 保存用户数据到文件 */
   saveFile (pk: string): (data: T) => Promise<DatabaseReturn<T>[DatabaseType.File]>
 
-  /** 保存用户数据到目录 */
+  /** @description 保存用户数据到目录 */
   saveDir (pk: string): (data: T) => Promise<DatabaseReturn<T>[DatabaseType.Dir]>
 
-  /** 保存用户数据到 SQL 数据库 */
+  /** @description 保存用户数据到 SQL 数据库 */
   saveSql (model: Model<any, any>, pk: string): (data: Partial<T>) => Promise<DatabaseReturn<T>[DatabaseType.Db]>
 
-  /** 根据主键查找或创建用户数据 */
+  /** @description 根据主键查找并创建用户数据 */
   findByPk (pk: string, create: true): Promise<DatabaseReturn<T>[D]>
 
-  /** 根据主键查找用户数据 */
+  /** @description 根据主键查找用户数据 */
   findByPk (pk: string, create?: boolean): Promise<DatabaseReturn<T>[D] | undefined>
 
-  /** 根据主键数组查找用户数据 */
+  /** @description 根据主键数组查找用户数据 */
   findAllByPks (pks: string[]): Promise<DatabaseReturn<T>[D][]>
 
-  /** 删除用户数据 */
+  /** @description 获取所有用户数据 */
+  findAll (): Promise<DatabaseReturn<T>[D][]>
+
+  /** @description 获取除 excludePks 以外所有用户数据 */
+  findAll (excludePks: string[]): Promise<DatabaseReturn<T>[D][]>
+
+  /** @description 删除用户数据 */
   destroy (pk: string): Promise<boolean>
 }
 
 export interface DatabaseClassStatic {
-  /** 数据库标识 */
+  /** @description 数据库标识 */
   dialect: Dialect
-  /** 数据库说明 */
+  /** @description 数据库说明 */
   description: string
 
   Column<T> (
@@ -129,11 +138,21 @@ export class DatabaseArray<T> extends Array<T> {
   }
 
   /**
+ * @param element - string | number
+ * @returns
+ */
+  has<U extends T & (string | number)> (element: U): boolean {
+    return new Set(this).has(element)
+  }
+
+  /**
    * @param isEqual 是否不添加重复元素
    */
   add (element: T, isEqual: boolean): this {
-    if (isEqual && this.some(item => lodash.isEqual(item, element))) {
-      return this
+    if (isEqual) {
+      const existingSet = new Set(this.map(item => JSON.stringify(item)))
+
+      if (existingSet.has(JSON.stringify(element))) return this
     }
 
     this.push(element)
@@ -146,11 +165,11 @@ export class DatabaseArray<T> extends Array<T> {
    */
   addSome (elements: T[], isEqual: boolean): this {
     if (isEqual) {
-      elements = elements.filter(element => !this.some(item => lodash.isEqual(item, element)))
+      const existingSet = new Set(this.map(item => JSON.stringify(item)))
 
-      if (elements.length === 0) {
-        return this
-      }
+      elements = elements.filter(element => !existingSet.has(JSON.stringify(element)))
+
+      if (elements.length === 0) return this
     }
 
     this.push(...elements)

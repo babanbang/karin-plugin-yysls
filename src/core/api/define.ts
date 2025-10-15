@@ -1,6 +1,6 @@
 import { dir } from '@/dir'
 import { ApiInfoFn } from '@/types/core'
-import { logger } from 'node-karin'
+import { logger, redis } from 'node-karin'
 import axios, { AxiosHeaders, AxiosRequestConfig, AxiosResponse } from 'node-karin/axios'
 
 export class DefineApi<
@@ -23,14 +23,31 @@ export class DefineApi<
   }
 
   async request (data: D): Promise<R> {
-    return this.#requestData(this.#apiInfo, data)
+    return await this.#requestData(this.#apiInfo, data)
   }
 
-  async next<
-    R extends Record<string, any> | null = null,
-    D extends Record<string, any> | null = null
-  > (apiInfo: ApiInfoFn<R, D>, data: D): Promise<R> {
-    return this.#requestData(apiInfo, data)
+  /**
+   * 优先获取缓存数据
+   */
+  async requestCache (key: string, seconds: number, data: D): Promise<R> {
+    const redisKey = `${dir.name}:apiCache:${key}`
+
+    const cache = await redis.get(redisKey)
+    if (cache) {
+      try {
+        return JSON.parse(cache) as R
+      } catch (err) {
+        logger.error(`[${dir.name}] redisCache(${key}) json parse error:`, err)
+      }
+    }
+
+    const result = await this.#requestData(this.#apiInfo, data)
+
+    if (seconds > 0) {
+      await redis.setEx(key, seconds, JSON.stringify(result))
+    }
+
+    return result
   }
 
   async #requestData (apiInfo: ApiInfoFn<any, any, any>, data: any): Promise<any> {

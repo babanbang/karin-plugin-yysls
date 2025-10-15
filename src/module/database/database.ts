@@ -32,7 +32,7 @@ export const Database = new class DatabaseClass {
     this.#defaultDialect = dialect
   }
 
-  /** 添加数据库 */
+  /** @description 添加数据库 */
   async Add (Database: DatabaseFn, Static: DatabaseClassStatic) {
     const db = Database()
     if (await db.check()) {
@@ -60,7 +60,7 @@ export const Database = new class DatabaseClass {
     }))
   }
 
-  /** 获取当前使用的数据库 */
+  /** @description 获取当前使用的数据库 */
   get<T extends Record<string, any>, D extends DatabaseType> () {
     return this.Db.Database<T, D>()
   }

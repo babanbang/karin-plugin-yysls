@@ -9,18 +9,18 @@ export interface GameInfoResponse extends BaseApiReponse {
   data: {
     roleId: string
     roleName: string
-    /** 头像ID */
+    /** @description 头像ID */
     roleAvatar: string
-    /** 百业 */
+    /** @description 百业 */
     clubName: string
     level: number
-    /** 上次登录时间 */
+    /** @description 上次登录时间 */
     loginTime: number
-    /** 总在线时长 */
+    /** @description 总在线时长 */
     onlineTime: number
-    /** 门派ID */
+    /** @description 门派ID */
     school: number
-    /** 风华值 */
+    /** @description 风华值 */
     fashionScore: number
   }
 }
@@ -33,7 +33,7 @@ export interface CumulativeFigResponse extends BaseApiReponse {
 
 export interface CumulativeFigItem {
   days: number
-  /** 是否已签到 */
+  /** @description 是否已签到 */
   isAttain: boolean
   calendarVoList: CalendarVoItem[]
 }

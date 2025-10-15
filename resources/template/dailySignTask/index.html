@@ -1,0 +1,54 @@
+<!-- karin plugin yysls default layout -->
+{{extend plugin.defaultLayout}}
+
+<!-- 页面样式资源 -->
+{{block 'css'}}
+<link rel="stylesheet" type="text/css" href="{{plugin.resources.default}}/template/{{plugin.template}}/index.css" />
+
+{{/block}}
+
+<!-- 页面布局内容 -->
+{{block 'container'}}
+<span class="logo"></span>
+
+<div class="sign-status">
+  <div class="status-item title">
+    <span class="name">任务名</span>
+    <span class="signed">已签到</span>
+    <span class="success">成功</span>
+    <span class="expired">access_token过期</span>
+    <span class="failed">失败</span>
+  </div>
+
+  <div class="status-item">
+    <span class="name">{{signStatus.name}}</span>
+    <span class="signed">{{signStatus.signed}}</span>
+    <span class="success">{{signStatus.success}}</span>
+    <span class="expired">{{signStatus.expired}}</span>
+    <span class="failed">{{signStatus.failed}}</span>
+  </div>
+
+  <div class="fail-list">
+    {{each signStatus.List ListItem}}
+    <div class="list-item">
+      <span class="title">{{ListItem.name}}列表</span>
+
+      {{each ListItem.data user}}
+      <div class="avatar">
+        <img class="icon" src="{{plugin.resources.download}}/images/avatar/{{user.avatar}}.png" />
+        {{user.name}}<br>UID: {{user.uid}}
+      </div>
+      {{/each}}
+    </div>
+
+    {{/each}}
+  </div>
+</div>
+{{/block}}
+
+<!-- 页面脚本资源 -->
+{{block 'script'}}
+<script>
+
+</script>
+{{/block}}

@@ -37,8 +37,8 @@ importers:
         specifier: ^0.11.9
         version: 0.11.9(eslint@9.36.0)(typescript@5.9.3)
       node-karin:
-        specifier: ^1.11.5
-        version: 1.11.5
+        specifier: ^1.11.6
+        version: 1.11.6
       tsup:
         specifier: ^8.5.0
         version: 8.5.0(tsx@4.20.6)(typescript@5.9.3)(yaml@2.7.0)
@@ -1227,7 +1227,7 @@ packages:
     resolution: {integrity: sha512-Bdboy+l7tA3OGW6FjyFHWkP5LuByj1Tk33Ljyq0axyzdk9//JSi2u3fP1QSmd1KNwq6VOKYGlAu87CisVir6Pw==}
 
   jsonfile@4.0.0:
-    resolution: {integrity: sha512-m6F1R3z8jjlf2imQHS2Qez5sjKWQzbuuhuJ/FKYFRZvPE3PuHcSMVZzfsLhGVOkfd20obL5SWEBew5ShlquNxg==}
+    resolution: {integrity: sha1-h3Gq4HmbZAdrdmQPygWPnBDjPss=}
 
   jsx-ast-utils@3.3.5:
     resolution: {integrity: sha512-ZZow9HBI5O6EPgSJLUb8n2NKgmVWTwCvHGwFuJlMjvLFqlGG6pjirPhtdsseaLZjSibD8eegzmYpUZwoIlj2cQ==}
@@ -1329,8 +1329,8 @@ packages:
     peerDependencies:
       eslint: ^9.0.0
 
-  node-karin@1.11.5:
-    resolution: {integrity: sha512-cP23tA9L/d2ttM3JAKTrgia/P4Zl9sWu9KTK1JwNxwkyrVXpA5cuZyAA7GHxKD4i+Gqlu6Usz7poRFXsuXWlSQ==}
+  node-karin@1.11.6:
+    resolution: {integrity: sha512-knM80RLN+FG9DfKRgg96b9zvcOykIOJxxZyj17eEtBvKfzSOlZtn9BaBuo8v2CqpjWCw+BRoTq3bKeRPI34csw==}
     engines: {node: '>=18'}
     hasBin: true
 
@@ -3227,7 +3227,7 @@ snapshots:
       - supports-color
       - typescript
 
-  node-karin@1.11.5:
+  node-karin@1.11.6:
     dependencies:
       art-template: '@karinjs/art-template@1.1.0'
       axios: '@karinjs/axios@1.2.0'

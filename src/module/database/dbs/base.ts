@@ -1,4 +1,4 @@
-import { json, logger } from 'node-karin'
+import { existToMkdirSync, json, logger, rmSync } from 'node-karin'
 import lodash from 'node-karin/lodash'
 import fs from 'node:fs'
 import path from 'node:path'
@@ -18,7 +18,7 @@ export class DbBase<T extends Record<string, any>, D extends DatabaseType> {
     this.databaseType = type
     this.databasePath = path.join(DataDir, modelName)
     if (type !== DatabaseType.Db) {
-      fs.mkdirSync(this.databasePath)
+      existToMkdirSync(this.databasePath)
     }
 
     this.modelName = modelName
@@ -48,7 +48,9 @@ export class DbBase<T extends Record<string, any>, D extends DatabaseType> {
 
   readSync (path: string, pk: string): DatabaseReturn<T>[DatabaseType.File] {
     const result: DatabaseReturn<T>[D] = json.readSync(path)
+
     result.save = this.saveFile(pk)
+    result.destroy = () => this.destroyPath(pk)
 
     return result
   }
@@ -59,6 +61,7 @@ export class DbBase<T extends Record<string, any>, D extends DatabaseType> {
 
     const result: Record<string, any> = {
       save: this.saveDir(pk),
+      destroy: () => this.destroyPath(pk),
       [this.model.primaryKeyAttribute]: pk
     }
     const filePromises = files.map(async (file) => {
@@ -111,6 +114,22 @@ export class DbBase<T extends Record<string, any>, D extends DatabaseType> {
     }
   }
 
+  destroyPath (pk: string): Promise<boolean> {
+    return new Promise((resolve) => {
+      const userPath = this.userPath(pk)
+
+      try {
+        rmSync(userPath, { recursive: true })
+
+        resolve(true)
+      } catch (err) {
+        logger.error(err)
+
+        resolve(false)
+      }
+    })
+  }
+
   saveSql (model: Model<any, any>, pk: string): (data: Partial<T>) => Promise<DatabaseReturn<T>[DatabaseType.Db]> {
     return async (data: Partial<T>) => {
       delete data[this.model.primaryKeyAttribute]
@@ -119,8 +138,18 @@ export class DbBase<T extends Record<string, any>, D extends DatabaseType> {
 
       return {
         ...result.toJSON<T>(),
-        save: this.saveSql(result, pk)
+        save: this.saveSql(result, pk),
+        destroy: () => this.destroySql(pk)
       }
     }
+  }
+
+  destroySql (pk: string): Promise<boolean> {
+    return new Promise((resolve) => {
+      const result = this.model.destroy({ where: { [this.model.primaryKeyAttribute]: pk } })
+        .then(count => count > 0).catch(() => false)
+
+      resolve(result)
+    })
   }
 }

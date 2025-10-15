@@ -36,6 +36,24 @@
         {{/if}}
       </div>
     </div>
+
+    <div class="sign-rewards">
+      {{if role.dailySign.day > 0}}
+      <span class="day">{{role.dailySign.day}}</span>
+
+      {{each role.dailySign.rewards reward}}
+      <div class="item">
+        <img class="icon" src="{{plugin.resources.default}}/image/reward/{{reward.name}}.png" />
+        *{{reward.num}}
+      </div>
+      {{/each}}
+
+      {{else}}
+      <span class="day">?</span>
+
+      <div class="item">未签到</div>
+      {{/if}}
+    </div>
   </div>
   {{/each}}
 

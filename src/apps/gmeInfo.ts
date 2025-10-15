@@ -1,11 +1,12 @@
 import { Command } from '@/core/command'
-import { User } from '@/core/user'
-import { CommandEnum } from '@/types/apps'
-import { UidInfoType } from '@/types/core/user'
+import { CommandCfg } from '@/core/config'
+import { UidInfoType, User } from '@/core/user'
+import { dir } from '@/dir'
+import { CommandEnum, rewardItem } from '@/types/apps'
 import { renderTemplate } from '@/utils'
-import karin, { Message, segment } from 'node-karin'
+import karin, { logger, Message, redis, segment } from 'node-karin'
 
-const showRoleListCmd = Command.getCommand(CommandEnum.RoleList, '')
+const showRoleListCmd = Command.getCommand(CommandEnum.ShowRoleList, '')
 
 export const showRoleList = async (e: Message) => {
   const user = await User.create(e.userId, true)
@@ -22,16 +23,32 @@ export const showRoleList = async (e: Message) => {
   }
 
   const renderData: {
-    roleList: Omit<UidInfoType, 'accessToken'>[]
+    roleList: (Omit<UidInfoType, 'accessToken'> & {
+      dailySign: { day: number, rewards: rewardItem[] }
+    })[]
   } = {
-    roleList: user.uidInfoList.map(uidinfo => {
-      const { accessToken, ...rest } = uidinfo
-
-      return rest
-    })
+    roleList: []
   }
 
-  const image = await renderTemplate(CommandEnum.RoleList, renderData)
+  await Promise.all(user.uidInfoList.map(async uidInfo => {
+    const { accessToken, ...rest } = uidInfo
+
+    const cache = await redis.get(`${dir.name}:dailySign:${uidInfo.uid}`).then(res => {
+      try {
+        return res ? JSON.parse(res) as { day: number, rewards: rewardItem[] } : { day: 0, rewards: [] }
+      } catch (err) {
+        logger.error(err)
+
+        return { day: 0, rewards: [] }
+      }
+    })
+
+    renderData.roleList.push({
+      ...rest, dailySign: cache
+    })
+  }))
+
+  const image = await renderTemplate(CommandEnum.ShowRoleList, renderData)
 
   await e.reply(segment.image(image), { at: true })
 
@@ -39,5 +56,14 @@ export const showRoleList = async (e: Message) => {
 }
 
 export const ShowRoleList = karin.command(
-  showRoleListCmd, showRoleList
+  showRoleListCmd,
+  async (e, next) => {
+    if (!CommandCfg.get<boolean>(`${CommandEnum.ShowRoleList}.enable`)) {
+      next()
+
+      return false
+    }
+
+    return await showRoleList(e)
+  }
 )

@@ -32,7 +32,7 @@ export const ResourcesUpdate = new class {
     await redis.setEx(dir.name + ':resourcesUpdate', 3600 * 8, '1')
   }
 
-  /** 头像 */
+  /** @description 头像 */
   async avatar () {
     const avatarData: { data: string } = (await axios.get('https://www.yysls.cn/res/config/data/head_s.json')).data
     const headDataDecode = this.decode<Record<string, BaseImage>>('头像', avatarData.data)
@@ -41,7 +41,7 @@ export const ResourcesUpdate = new class {
     )), true)
   }
 
-  /** 奇术 */
+  /** @description 奇术 */
   async qishu () {
     const qishuData: string = (await axios.get('https://www.yysls.cn/res/config/data/qishu.txt')).data
     const qishuDataDecode = this.decode<Record<string, QishuImage>>('奇术', qishuData)
@@ -50,7 +50,7 @@ export const ResourcesUpdate = new class {
     )), true)
   }
 
-  /** 装备 */
+  /** @description 装备 */
   async equip () {
     const equipData: string = (await axios.get('https://www.yysls.cn/res/config/data/equip.txt')).data
     const equipDataDecode = this.decode<Record<string, EquipImage>>('装备', equipData)
@@ -59,7 +59,7 @@ export const ResourcesUpdate = new class {
     )), true)
   }
 
-  /** 门派 */
+  /** @description 门派 */
   async menpai () {
     const menpaiData: string = (await axios.get('https://www.yysls.cn/res/config/data/base_school.txt')).data
     const menpaiDataDecode = this.decode<Record<string, MenpaiImage>>('门派', menpaiData)
@@ -68,7 +68,7 @@ export const ResourcesUpdate = new class {
     )), true)
   }
 
-  /** 背景图 */
+  /** @description 背景图 */
   async cardbg () {
     const cardbgData: string = (await axios.get('https://www.yysls.cn/res/config/data/name_card_bg.txt')).data
     const cardbgDataDecode = this.decode<Record<string, CardbgImage>>('背景图', cardbgData)
@@ -77,7 +77,7 @@ export const ResourcesUpdate = new class {
     )), true)
   }
 
-  /** 武学 */
+  /** @description 武学 */
   async wuxue () {
     const wuxueData: string = (await axios.get('https://www.yysls.cn/res/config/data/kongfu.txt')).data
     const wuxueDataDecode = this.decode<Record<string, WuxueImage>>('武学', wuxueData)
@@ -86,7 +86,7 @@ export const ResourcesUpdate = new class {
     )), true)
   }
 
-  /** 风华 */
+  /** @description 风华 */
   async fashion () {
     const fashionLevelData: string = (await axios.get('https://www.yysls.cn/res/config/data/fashion_level.txt')).data
     const fashionLevelDataDecode = this.decode<FashionLevelImage[]>('风华', fashionLevelData)

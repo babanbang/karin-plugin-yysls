@@ -18,3 +18,11 @@ export interface CumulativeFigListItem {
   }[]
   reward: rewardItem
 }
+
+export interface DailySignTaskStatus {
+  name: string
+  signed: number
+  success: number
+  expired: number
+  failed: number
+}
