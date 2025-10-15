@@ -141,7 +141,7 @@ export class DatabaseArray<T> extends Array<T> {
  * @param element - string | number
  * @returns
  */
-  has<U extends T & (string | number)> (element: U): boolean {
+  has (element: T & (string | number)): boolean {
     return new Set(this).has(element)
   }
 

@@ -7,9 +7,19 @@ import path from 'node:path'
 const PushListPath = path.join(dir.ConfigDir, 'pushlist.json')
 
 const DefaultPushList: PushListType = {
-  globalMaster: [],
-  globalAdmin: [],
-  [CommandEnum.DailySignTask]: []
+  globalMaster: {},
+  globalAdmin: {},
+  [CommandEnum.DailySignTask]: {}
 }
 
-export const PushListCfg = new Config(PushListPath, DefaultPushList)
+export const PushListCfg = new Config(PushListPath, DefaultPushList, {
+  globalMaster: {
+    defaultConfig: []
+  },
+  globalAdmin: {
+    defaultConfig: []
+  },
+  [CommandEnum.DailySignTask]: {
+    defaultConfig: []
+  }
+})

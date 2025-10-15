@@ -22,7 +22,7 @@ export class EnhancedArray<T> extends Array<T> {
    * @param element - string | number
    * @returns
    */
-  has<U extends T & (string | number)> (element: U): boolean {
+  has (element: T & (string | number)): boolean {
     return new Set(this).has(element)
   }
 
@@ -63,29 +63,38 @@ export class EnhancedArray<T> extends Array<T> {
   }
 
   /**
-   * @param save 是否立即保存
+   * @param predicate - 要删除的元素、删除条件函数或索引
+   * @param save - 是否立即保存
+   * @param isIndex - 当 predicate 为数字时，是否将其视为索引
    */
+  remove (predicate: T & number, save: boolean, isIndex: true): this
+  remove (predicate: T | ((item: T) => boolean), save: boolean): this
   remove (predicate: T | ((item: T) => boolean), save: boolean, isIndex: boolean = false): this {
-    let newArr: T[] = []
-
     if (isIndex && lodash.isNumber(predicate)) {
       if (predicate < 0 || predicate >= this.length) {
-        logger.error(`索引 ${predicate} 超出范围`)
+        logger.error(`索引 ${predicate} 超出范围 [0, ${this.length - 1}]`)
         return this
       }
-      newArr = [...this.slice(0, predicate), ...this.slice(predicate + 1)]
+      lodash.pullAt(this, predicate)
     } else if (lodash.isFunction(predicate)) {
-      newArr = this.filter(item => !predicate(item))
+      lodash.remove(this as T[], predicate)
     } else {
-      newArr = lodash.without(this, predicate)
+      lodash.pull(this, predicate)
     }
-
-    // 清空当前数组并添加新元素
-    this.length = 0
-    this.push(...newArr)
 
     this.#cfg.set<T[]>(this.#keyPath, this.slice(), save)
 
+    return this
+  }
+
+  /**
+  * @param predicate - 要删除的元素数组
+  * @param save - 是否立即保存
+  */
+  removeSome (elements: T[], save: boolean): this {
+    lodash.pullAll(this, elements)
+
+    this.#cfg.set<T[]>(this.#keyPath, this.slice(), save)
     return this
   }
 

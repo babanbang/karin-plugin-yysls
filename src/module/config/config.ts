@@ -12,14 +12,16 @@ export class Config<C extends Record<string, any>> {
     * @description 默认配置
     */
   #DefaultConfig: C
+  #IgnoreConfig: Record<string, any>
   /**
     * @description 配置保存路径
     */
   #ConfigPath: string
 
-  constructor (ConfigPath: string, DefaultConfig: C) {
+  constructor (ConfigPath: string, DefaultConfig: C, IgnoreConfig: Record<string, any>) {
     this.#ConfigPath = ConfigPath
     this.#DefaultConfig = DefaultConfig
+    this.#IgnoreConfig = IgnoreConfig
 
     !existsSync(ConfigPath) && writeJsonSync(ConfigPath, DefaultConfig)
 
@@ -30,7 +32,7 @@ export class Config<C extends Record<string, any>> {
     const config = requireFileSync(this.#ConfigPath)
 
     // 检查并补全缺失的配置项
-    const mergedConfig = this.mergeWithDefaults(config, this.#DefaultConfig)
+    const mergedConfig = this.mergeWithDefaults(config, this.#DefaultConfig, this.#IgnoreConfig)
 
     // 更新缓存
     this.#ConfigCache = mergedConfig
@@ -38,23 +40,33 @@ export class Config<C extends Record<string, any>> {
     return mergedConfig
   }
 
-  mergeWithDefaults (userConfig: Record<string, any>, defaultConfig: Record<string, any>): C {
+  mergeWithDefaults (userConfig: Record<string, any>, defaultConfig: Record<string, any>, IgnoreConfig: Record<string, any>): C {
     // 递归函数，用于过滤掉用户配置中不存在于默认配置的字段
-    const filterUserConfig = (user: any, defaults: any): any => {
+    const filterUserConfig = (user: any, defaults: any, Ignore: any): any => {
       if (lodash.isPlainObject(user) && lodash.isPlainObject(defaults)) {
         const filtered: Record<string, any> = {}
-        for (const key in defaults) {
-          if (Object.prototype.hasOwnProperty.call(user, key)) {
-            filtered[key] = filterUserConfig(user[key], defaults[key])
-          }
+
+        if (Ignore?.defaultConfig) {
+          lodash.forEach(user, (value, key) => {
+            // 合并用户配置和默认配置，确保动态键也包含完整字段
+            const mergedValue = lodash.merge({}, Ignore.defaultConfig, value)
+
+            filtered[key] = filterUserConfig(mergedValue, Ignore.defaultConfig, Ignore[key])
+          })
         }
+
+        lodash.forEach(defaults, (value, key) => {
+          filtered[key] = filterUserConfig(user[key], value, Ignore?.[key])
+        })
+
         return filtered
       }
+
       return user
     }
 
     // 先过滤用户配置，只保留默认配置中定义的字段
-    const filteredUserConfig = filterUserConfig(userConfig, defaultConfig)
+    const filteredUserConfig = filterUserConfig(userConfig, defaultConfig, IgnoreConfig)
 
     // 然后合并配置
     const result = lodash.merge({}, defaultConfig, filteredUserConfig)
@@ -82,12 +94,12 @@ export class Config<C extends Record<string, any>> {
   /**
  * @description 获取配置路径对应的配置
  */
-  get<T> (path: string, isArray?: false): T
-  get<T> (path: string, isArray: true): EnhancedArray<T>
-  get<T> (path: string, isArray: boolean = false): T | EnhancedArray<T> {
+  get<T> (path: string, isArray?: false, def?: T): T
+  get<T> (path: string, isArray: true, def?: T[]): EnhancedArray<T>
+  get<T> (path: string, isArray: boolean = false, def?: T): T | EnhancedArray<T> {
     const conf = JSON.parse(JSON.stringify(this.#ConfigCache))
 
-    const result = path ? lodash.get(conf, path) : conf
+    const result = path ? lodash.get(conf, path, def) : conf
 
     if (isArray) {
       if (!Array.isArray(result)) {

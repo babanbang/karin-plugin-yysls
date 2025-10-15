@@ -1,6 +1,6 @@
 import { CumulativeFigItem, dailySign, getCumulativeFigData } from '@/core/api'
 import { Command } from '@/core/command'
-import { BlackListCfg, Cfg, CommandCfg, DailySignPermission, DailySignTaskPermission, PushContactType, PushListCfg, WhiteListCfg } from '@/core/config'
+import { BlackListCfg, Cfg, CommandCfg, DailySignPermission, DailySignTaskPermission, PushContactMsgType, PushContactType, PushListCfg, WhiteListCfg } from '@/core/config'
 import { AccountInfoDB, AccountInfoType } from '@/core/database'
 import { User } from '@/core/user'
 import { dir } from '@/dir'
@@ -267,13 +267,14 @@ const SignTask = async (isAuto: boolean) => {
 
   const image = segment.image(await renderTemplate(CommandEnum.DailySignTask, renderData))
   if (isAuto) {
-    const pushList = PushListCfg.get<PushContactType>(CommandEnum.DailySignTask, true)
+    const botPushList = PushListCfg.get<PushContactType>(CommandEnum.DailySignTask)
+    const pushList: PushContactMsgType[] = []
 
-    await common.pushMsgTo('Contact', {
-      pushList: pushList.map(item => ({
-        ...item, message: image
-      }))
+    lodash.forEach(botPushList, (contacts, botId) => {
+      pushList.push(...contacts.map(contact => ({ botId, contact, message: image })))
     })
+
+    await common.pushMsgTo('Contact', { pushList })
   }
 
   for (const key of Cfg.get<'Master' | 'Admin'>(`${CommandEnum.DailySignTask}.globalPush`, true)) {

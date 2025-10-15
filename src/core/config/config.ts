@@ -22,4 +22,4 @@ const DefaultConfig: ConfigType = {
   }
 }
 
-export const Cfg = new Config(ConfigPath, DefaultConfig)
+export const Cfg = new Config(ConfigPath, DefaultConfig, {})

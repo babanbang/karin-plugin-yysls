@@ -8,10 +8,16 @@ const WhiteListPath = path.join(dir.ConfigDir, 'whitelist.json')
 
 const DefaultWhiteList: RosterType = {
   [CommandEnum.DailySign]: {
-    uids: [],
-    members: [],
-    groups: []
+    global: {
+      uids: [], members: [], groups: []
+    }
   }
 }
 
-export const WhiteListCfg = new Config(WhiteListPath, DefaultWhiteList)
+export const WhiteListCfg = new Config(WhiteListPath, DefaultWhiteList, {
+  [CommandEnum.DailySign]: {
+    defaultConfig: {
+      uids: [], members: [], groups: []
+    }
+  }
+})

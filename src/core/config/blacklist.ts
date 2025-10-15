@@ -8,10 +8,16 @@ const BlackListPath = path.join(dir.ConfigDir, 'blacklist.json')
 
 const DefaultBlackList: RosterType = {
   [CommandEnum.DailySign]: {
-    uids: [],
-    members: [],
-    groups: []
+    global: {
+      uids: [], members: [], groups: []
+    }
   }
 }
 
-export const BlackListCfg = new Config(BlackListPath, DefaultBlackList)
+export const BlackListCfg = new Config(BlackListPath, DefaultBlackList, {
+  [CommandEnum.DailySign]: {
+    defaultConfig: {
+      uids: [], members: [], groups: []
+    }
+  }
+})

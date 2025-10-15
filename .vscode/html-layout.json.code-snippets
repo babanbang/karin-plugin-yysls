@@ -1,5 +1,6 @@
 {
   "yysls default layout": {
+    "scope": "html",
     "prefix": "!yysls-default",
     "description": "插入 Karin yysls 模版",
     "body": [
@@ -23,6 +24,37 @@
       "",
       "</script>",
       "{{/block}}",
+      ""
+    ]
+  },
+  "karin command": {
+    "scope": "javascript,typescript",
+    "prefix": "!karin.command",
+    "description": "插入 Karin command",
+    "body": [
+      "",
+      "export const command = karin.command(",
+      "  '#燕云(十六声)?',",
+      "  async (e, next) => {",
+      "",
+      "  }",
+      ")",
+      ""
+    ]
+  },
+  "karin task": {
+    "scope": "javascript,typescript",
+    "prefix": "!karin.task",
+    "description": "插入 Karin task",
+    "body": [
+      "",
+      "export const task = karin.task(",
+      "  '定时任务',",
+      "  '0 0 * * * *',",
+      "  async () => {",
+      "",
+      "  }",
+      ")",
       ""
     ]
   }

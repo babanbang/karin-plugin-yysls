@@ -1,5 +1,5 @@
-import { PushContactType, PushListCfg, PushTargetType } from '@/core'
-import karin, { Contact, SendMessage } from 'node-karin'
+import { PushContactMsgType, PushListCfg, PushTargetMsgType } from '@/core'
+import karin, { SendMessage } from 'node-karin'
 import lodash from 'node-karin/lodash'
 import moment from 'node-karin/moment'
 
@@ -32,22 +32,15 @@ export const getRemainSecondsOfToday = () => moment().endOf('day').diff(moment()
  * @description 主动推送消息
  */
 export async function pushMsgTo (to: 'Contact', data: {
-  pushList: {
-    botId: string; contact: Contact; message: SendMessage
-  }[]
+  pushList: PushContactMsgType[]
 }): Promise<boolean>
-
 export async function pushMsgTo (to: 'Master' | 'Admin', data: {
-  msgFn: (item: PushTargetType) => (PushTargetType & { message: SendMessage })
+  msgFn: (item: Omit<PushTargetMsgType, 'message'>) => PushTargetMsgType
 }): Promise<boolean>
-
-export async function pushMsgTo (
-  to: 'Contact' | 'Master' | 'Admin',
-  data: {
-    pushList?: (PushContactType & { message: SendMessage })[]
-    msgFn?: (item: PushTargetType) => (PushTargetType & { message: SendMessage })
-  }
-): Promise<boolean> {
+export async function pushMsgTo (to: 'Contact' | 'Master' | 'Admin', data: {
+  pushList?: PushContactMsgType[]
+  msgFn?: (item: Omit<PushTargetMsgType, 'message'>) => PushTargetMsgType
+}): Promise<boolean> {
   switch (to) {
     case 'Contact': {
       const botIds = new Set(karin.getAllBotID())
@@ -67,9 +60,12 @@ export async function pushMsgTo (
     case 'Master': {
       const botIds = new Set(karin.getAllBotID())
 
-      const pushList = PushListCfg.get<PushTargetType>(`global${to}`, true).filter(
-        item => botIds.has(item.botId)
-      ).map(data.msgFn!)
+      const pushList: { botId: string; targetId: string; message: SendMessage }[] = []
+      for (const botId of botIds) {
+        const botPushList = PushListCfg.get<string>(`global${to}.${botId}`, true)
+
+        pushList.push(...botPushList.map(targetId => data.msgFn!({ botId, targetId })))
+      }
 
       for (const pushItem of pushList) {
         await karin[`send${to}`](pushItem.botId, pushItem.targetId, pushItem.message)

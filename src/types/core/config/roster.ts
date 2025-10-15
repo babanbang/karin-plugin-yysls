@@ -1,10 +1,13 @@
 import { CommandEnum } from '@/types/apps'
 
 export interface RosterType {
-  [CommandEnum.DailySign]: DailySignRoster
+  [CommandEnum.DailySign]: {
+    global: RosterItemType
+    [key: string]: RosterItemType
+  }
 }
 
-export interface DailySignRoster {
+export interface RosterItemType {
   /** @description Uid名单 */
   uids: string[]
   /** @description 成员名单 */
