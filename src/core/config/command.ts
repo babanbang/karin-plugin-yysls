@@ -24,4 +24,4 @@ const DefaultCommand: CommandType = {
   }
 }
 
-export const CommandCfg = new Config(CommandPath, DefaultCommand, {})
+export const CommandCfg = new Config(CommandPath, DefaultCommand, {}).watch()

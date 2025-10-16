@@ -3,26 +3,26 @@ import { CommandEnum } from '@/types/apps'
 import karin, { Contact, config as karinCfg } from 'node-karin'
 
 export const setGlobalPush = karin.command(
-  '#燕云(十六声)?(添加|删除)全局推送',
+  '#燕云(十六声)?(添加|删除)全局(主人|管理员)推送',
   async (e, next) => {
-    const [, , setType, _setId] = e.msg.match(/#燕云(十六声)?(添加|删除)全局推送(.*)/)!
+    const [, , setType, role, _setId = ''] = e.msg.match(/#燕云(十六声)?(添加|删除)全局(主人|管理员)推送(.*)/)!
 
     const setId = _setId.trim() || e.userId
 
     let permission = ''
-    if (new Set(karinCfg.master()).has(setId)) {
+    if (role === '主人' && new Set(karinCfg.master()).has(setId)) {
       permission = 'Master'
-    } else if (new Set(karinCfg.admin()).has(setId)) {
+    } else if (role === '管理员' && new Set(karinCfg.admin()).has(setId)) {
       permission = 'Admin'
     }
 
     if (!permission) {
-      await e.reply(`${setId} 不是管理员或主人!`, { at: true })
+      await e.reply(`${setId} 不是${role}!`, { at: true })
 
       return true
     }
 
-    const globalBotPush = PushListCfg.get<string>(`global${permission}.${e.selfId}`, true)
+    const globalBotPush = PushListCfg.get<string>(`global${permission}.${e.selfId}`, true, [])
 
     switch (setType) {
       case '添加':
@@ -42,27 +42,27 @@ export const setGlobalPush = karin.command(
   }
 )
 
-const normalKeys: Record<string, CommandEnum> = {
-  签到: CommandEnum.DailySign,
+export const normalPushKeys: Record<string, CommandEnum> = {
+  签到任务: CommandEnum.DailySignTask,
 }
 
 export const setNormalPush = karin.command(
-  `#燕云(十六声)?(开启|关闭)(${Object.keys(normalKeys).join('|')})推送$`,
+  `#燕云(十六声)?(开启|关闭)(${Object.keys(normalPushKeys).join('|')})推送$`,
   async (e, next) => {
-    const [, , setType, key] = e.msg.match(new RegExp(`#燕云(十六声)?(添加|删除)(${Object.keys(normalKeys).join('|')})推送`))!
-    const command = normalKeys[key]
+    const [, , setType, key] = e.msg.match(new RegExp(`#燕云(十六声)?(开启|关闭)(${Object.keys(normalPushKeys).join('|')})推送`))!
+    const command = normalPushKeys[key]
 
-    if (setType === '添加') {
+    if (setType === '开启') {
       switch (command) {
         default: {
-          const botPush = PushListCfg.get<Contact>(`${command}.${e.selfId}`, true)
+          const botPush = PushListCfg.get<Contact>(`${command}.${e.selfId}`, true, [])
 
           botPush.add(e.contact, true, true)
           break
         }
       }
     } else {
-      const botPush = PushListCfg.get<Contact>(`${command}.${e.selfId}`, true)
+      const botPush = PushListCfg.get<Contact>(`${command}.${e.selfId}`, true, [])
 
       botPush.remove((contact) => contact.peer === e.contact.peer && contact.subPeer === e.contact.subPeer, true)
     }

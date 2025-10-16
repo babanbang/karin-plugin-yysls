@@ -1,3 +1,4 @@
+import { ConfigIgnore } from '@/module/config'
 import { CommandEnum } from '@/types/apps'
 
 export interface RosterType {
@@ -5,6 +6,10 @@ export interface RosterType {
     global: RosterItemType
     [key: string]: RosterItemType
   }
+}
+
+export interface RosterIgnoreType {
+  [CommandEnum.DailySign]: ConfigIgnore<RosterItemType>
 }
 
 export interface RosterItemType {

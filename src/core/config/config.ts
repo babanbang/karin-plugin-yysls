@@ -18,8 +18,8 @@ const DefaultConfig: ConfigType = {
     auto: false,
     corn: '0 30 8 * * *',
     globalPush: ['Master'],
-    permission: DailySignTaskPermission.Auto
+    permission: DailySignTaskPermission.Everyone
   }
 }
 
-export const Cfg = new Config(ConfigPath, DefaultConfig, {})
+export const Cfg = new Config(ConfigPath, DefaultConfig, {}).watch()

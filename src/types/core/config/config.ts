@@ -29,7 +29,7 @@ export const enum DailySignTaskPermission {
   UidBlack = 'uidBlack',
   MemberWhite = 'memberWhite',
   MemberBlack = 'memberBlack',
-  Auto = 'auto'
+  Everyone = 'everyone'
 }
 
 export interface DailySignTaskConfig {

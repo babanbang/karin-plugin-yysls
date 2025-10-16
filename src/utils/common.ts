@@ -62,7 +62,7 @@ export async function pushMsgTo (to: 'Contact' | 'Master' | 'Admin', data: {
 
       const pushList: { botId: string; targetId: string; message: SendMessage }[] = []
       for (const botId of botIds) {
-        const botPushList = PushListCfg.get<string>(`global${to}.${botId}`, true)
+        const botPushList = PushListCfg.get<string>(`global${to}.${botId}`, true, [])
 
         pushList.push(...botPushList.map(targetId => data.msgFn!({ botId, targetId })))
       }

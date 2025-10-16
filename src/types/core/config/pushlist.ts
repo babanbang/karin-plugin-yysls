@@ -1,3 +1,4 @@
+import { ConfigIgnoreArray } from '@/module/config'
 import { CommandEnum } from '@/types/apps'
 import { Contact, SendMessage } from 'node-karin'
 
@@ -5,6 +6,12 @@ export interface PushListType {
   globalMaster: PushTargetType
   globalAdmin: PushTargetType
   [CommandEnum.DailySignTask]: PushContactType
+}
+
+export interface PushListIgnoreType {
+  globalMaster: ConfigIgnoreArray<string>
+  globalAdmin: ConfigIgnoreArray<string>
+  [CommandEnum.DailySignTask]: ConfigIgnoreArray<Contact>
 }
 
 export type PushContactType = Record<string, Contact[]>

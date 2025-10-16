@@ -1,7 +1,18 @@
 import { dir } from '@/dir'
-import { existsSync, logger, requireFileSync, writeJsonSync } from 'node-karin'
+import { existsSync, logger, requireFileSync, watch, writeJsonSync } from 'node-karin'
 import lodash from 'node-karin/lodash'
 import { EnhancedArray } from './array'
+
+export interface ConfigIgnore<T> {
+  defaultConfig: T
+}
+
+export interface ConfigIgnoreArray<T> {
+  defaultConfig: T[]
+  defaultConfigItem: {
+    defaultConfig: T
+  }
+}
 
 export class Config<C extends Record<string, any>> {
   /**
@@ -43,20 +54,34 @@ export class Config<C extends Record<string, any>> {
   mergeWithDefaults (userConfig: Record<string, any>, defaultConfig: Record<string, any>, IgnoreConfig: Record<string, any>): C {
     // 递归函数，用于过滤掉用户配置中不存在于默认配置的字段
     const filterUserConfig = (user: any, defaults: any, Ignore: any): any => {
-      if (lodash.isPlainObject(user) && lodash.isPlainObject(defaults)) {
+      if (Array.isArray(user) && Array.isArray(defaults)) {
+        if (Ignore?.defaultConfigItem) {
+          const filtered: any[] = []
+
+          user.forEach((value, key) => {
+            filtered[key] = filterUserConfig(value, Ignore.defaultConfigItem.defaultConfig, Ignore.defaultConfigItem.defaultConfig)
+          })
+
+          return filtered
+        }
+
+        return user
+      } else if (lodash.isPlainObject(user) && lodash.isPlainObject(defaults)) {
         const filtered: Record<string, any> = {}
+
+        const mergedValue = lodash.merge({}, defaults, user)
 
         if (Ignore?.defaultConfig) {
           lodash.forEach(user, (value, key) => {
             // 合并用户配置和默认配置，确保动态键也包含完整字段
-            const mergedValue = lodash.merge({}, Ignore.defaultConfig, value)
+            const mergedValue = lodash.merge(Array.isArray(value) ? [] : {}, Ignore.defaultConfig, value)
 
-            filtered[key] = filterUserConfig(mergedValue, Ignore.defaultConfig, Ignore[key])
+            filtered[key] = filterUserConfig(mergedValue, Ignore.defaultConfig, Array.isArray(value) ? Ignore : Ignore[key])
           })
         }
 
         lodash.forEach(defaults, (value, key) => {
-          filtered[key] = filterUserConfig(user[key], value, Ignore?.[key])
+          filtered[key] = filterUserConfig(mergedValue[key], value, Ignore?.[key])
         })
 
         return filtered
@@ -133,5 +158,13 @@ export class Config<C extends Record<string, any>> {
     } catch (err) {
       logger.error(err)
     }
+  }
+
+  watch () {
+    watch(this.#ConfigPath, () => {
+      this.loadConfig()
+    })
+
+    return this
   }
 }
