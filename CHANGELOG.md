@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.0.4](https://github.com/babanbang/karin-plugin-yysls/compare/v1.0.3...v1.0.4) (2025-10-16)
+
+
+### Bug Fixes
+
+* 完善签到任务、角色列表显示签到情况 ([cd4cf4b](https://github.com/babanbang/karin-plugin-yysls/commit/cd4cf4b1aff0466a51d2ff83cf5563083bd2c93b))
+* 推送、黑白名单管理，优化配置文件字段过滤 ([bd15966](https://github.com/babanbang/karin-plugin-yysls/commit/bd1596634b0aa66369dcbe4fde34c574090b4b01))
+* 配置文件缺失字段自动补足、增加web可配置项、监听配置文件修改 ([7269146](https://github.com/babanbang/karin-plugin-yysls/commit/7269146d7638583ab3d24316b96780927c1c8a27))
+
 ## [1.0.3](https://github.com/babanbang/karin-plugin-yysls/compare/v1.0.2...v1.0.3) (2025-10-09)
 
 
