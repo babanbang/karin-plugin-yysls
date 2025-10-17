@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.6](https://github.com/babanbang/karin-plugin-yysls/compare/v1.0.5...v1.0.6) (2025-10-17)
+
+
+### Bug Fixes
+
+* 优化签到任务推送图片布局 ([7e531f5](https://github.com/babanbang/karin-plugin-yysls/commit/7e531f58dade99bd8444ffffd1bf106c6d218ff8))
+
 ## [1.0.5](https://github.com/babanbang/karin-plugin-yysls/compare/v1.0.4...v1.0.5) (2025-10-17)
 
 
