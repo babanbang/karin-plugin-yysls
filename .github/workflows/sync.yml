@@ -1,0 +1,16 @@
+name: Sync to npmmirror # 同步到 npmmirror 的工作流程名称
+on:
+  workflow_dispatch: # 允许手动触发工作流
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      # 检出代码
+      - uses: actions/checkout@v4
+      # 设置 Node.js 环境
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      # 安装 cnpm 并同步当前项目
+      - name: Sync to npmmirror.com
+        run: npm install cnpm -g && cnpm sync
