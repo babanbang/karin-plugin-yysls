@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.5](https://github.com/babanbang/karin-plugin-yysls/compare/v1.0.4...v1.0.5) (2025-10-17)
+
+
+### Bug Fixes
+
+* 完善黑白名单web配置 ([510b331](https://github.com/babanbang/karin-plugin-yysls/commit/510b331a8befa9a020864800975425e38081df4d))
+
 ## [1.0.4](https://github.com/babanbang/karin-plugin-yysls/compare/v1.0.3...v1.0.4) (2025-10-16)
 
 
