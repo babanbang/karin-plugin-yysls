@@ -253,16 +253,15 @@ const SignTask = async (isAuto: boolean) => {
     }
   } = {
     signStatus: {
-      ...TaskStatus,
-      List: [
-        {
-          name: 'access_token过期', data: expiredList
-        },
-        {
-          name: '签到失败', data: failList
-        }
-      ]
+      ...TaskStatus, List: []
     }
+  }
+
+  if (expiredList.length > 0) {
+    renderData.signStatus.List.push({ name: 'access_token过期', data: expiredList })
+  }
+  if (failList.length > 0) {
+    renderData.signStatus.List.push({ name: '签到失败', data: failList })
   }
 
   const image = segment.image(await renderTemplate(CommandEnum.DailySignTask, renderData))

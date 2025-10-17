@@ -28,7 +28,9 @@
     <span class="failed">{{signStatus.failed}}</span>
   </div>
 
+  {{if signStatus.List.length > 0}}
   <div class="fail-list">
+
     {{each signStatus.List ListItem}}
     <div class="list-item">
       <span class="title">{{ListItem.name}}列表</span>
@@ -43,6 +45,8 @@
 
     {{/each}}
   </div>
+  {{/if}}
+
 </div>
 {{/block}}
 
