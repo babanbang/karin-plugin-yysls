@@ -2,14 +2,14 @@ import { BlackListCfg, WhiteListCfg } from '@/core/config'
 import { CommandEnum } from '@/types/apps'
 import karin from 'node-karin'
 
-const rosterKeys: Record<string, CommandEnum> = {
+export const rosterKeys: Record<string, CommandEnum> = {
   签到: CommandEnum.DailySign,
 }
 
 export const setRoster = karin.command(
-  `#燕云(十六声)?(添加|删除)(bot)?(${Object.keys(rosterKeys).join('|')})(群|uid)?(白|黑)名单`,
+  `#燕云(十六声)?(添加|删除)(bot|全局)(${Object.keys(rosterKeys).join('|')})(群|uid)?(白|黑)名单`,
   async (e, next) => {
-    const [, , setType, isBot, key, scope, listType, _setId = ''] = e.msg.match(new RegExp(`#燕云(十六声)?(添加|删除)(${Object.keys(rosterKeys).join('|')})(群|uid)?(白|黑)名单(.*)`))!
+    const [, , setType, isBot, key, scope, listType, _setId = ''] = e.msg.match(new RegExp(`#燕云(十六声)?(添加|删除)(bot|全局)(${Object.keys(rosterKeys).join('|')})(群|uid)?(白|黑)名单(.*)`))!
 
     const setId = _setId.trim().split('|')
     if (setId.length === 0) {
@@ -42,7 +42,7 @@ export const setRoster = karin.command(
       rosterList.removeSome(setId, true)
     }
 
-    await e.reply(`${setId.join(',')} 「${isBot ? ('Bot:' + e.selfId) : '全局'}」${listType}名单${setType}成功!`, { at: true })
+    await e.reply(`${setId.join(',')} 「${isBot === 'bot' ? ('Bot:' + e.selfId) : '全局'}」${listType}名单${setType}成功!`, { at: true })
 
     return true
   },

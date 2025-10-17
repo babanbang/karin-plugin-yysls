@@ -1,5 +1,6 @@
 import { normalPushKeys } from '@/apps/pushManger'
-import { Cfg, CommandCfg, CommandType, DailySignPermission, DailySignTaskPermission, PushContactType, PushListCfg, PushTargetType } from '@/core/config'
+import { rosterKeys } from '@/apps/rosterManger'
+import { BlackListCfg, Cfg, CommandCfg, CommandType, DailySignPermission, DailySignTaskPermission, PushContactType, PushListCfg, PushTargetType, RosterItemType, WhiteListCfg } from '@/core/config'
 import { dir } from '@/dir'
 import { Database, Dialect } from '@/module/database'
 import { CommandDescription, CommandEnum } from '@/types/apps'
@@ -21,6 +22,8 @@ type CommandSaveEntry = Record<`group-${CommandEnum}-cmds`, string[]> &
 type PushSaveEntry = Record<`group-globalMaster-${string}`, string[]> &
   Record<`group-globalAdmin-${string}`, string[]> &
   Record<`group-${CommandEnum}-${string}`, string[]>
+
+type RosterSaveEntry = Record<`group-${'whiteList' | 'blackList'}-${CommandEnum}-${string}-${'uids' | 'members' | 'groups'}`, string[]>
 
 export default defineConfig({
   /** 插件信息配置 */
@@ -164,7 +167,7 @@ export default defineConfig({
             components.input.group(`group-${key}-cmds`, {
               label: '触发指令',
               data: value.cmds,
-              template: components.input.string(`template-${key}-cmds`, {
+              template: components.input.string(`template-command-${key}-cmds`, {
                 label: '指令'
               })
             }),
@@ -203,7 +206,7 @@ export default defineConfig({
         }),
         components.accordion.createItem('accordion-push-globalAdmin', {
           title: '全局推送「管理员」',
-          subtitle: '指令「#燕云(十六声)?(添加|删除)全局管理员推送(id/@)」',
+          subtitle: '指令「#燕云(十六声)?(添加|删除)全局管理员推送 +(id/@)」，id可用|分割',
           children: Object.entries(PushListCfg.get<PushTargetType>('globalAdmin')).map(([key, value]) => components.input.group(`group-globalAdmin-${key}`, {
             label: `Bot: ${key}`,
             data: value,
@@ -220,7 +223,7 @@ export default defineConfig({
             .map(([key, value]) => components.input.group(`group-${command}-${key}`, {
               label: `Bot: ${key}`,
               data: value.map(v => JSON.stringify(v)),
-              template: components.input.string(`template-${command}-${key}`, {
+              template: components.input.string(`template-push-${command}-${key}`, {
                 label: 'Contact'
               })
             })),
@@ -228,21 +231,74 @@ export default defineConfig({
       ]
     }),
 
-    components.divider.horizontal('divider-whiteList-key'),
-    components.accordion.create('accordion-whiteList-key', {
-      label: '白名单设置',
-      children: [
+    ...[['白名单', 'whiteList'], ['黑名单', 'blackList']].map(([type, typeKey]) => [
+      components.divider.horizontal(`divider-${typeKey}-key`),
+      components.accordion.create(`accordion-${typeKey}-key`, {
+        label: `${type}配置`,
+        children: Object.entries(rosterKeys).map(([name, command]) => components.accordion.createItem(`accordion-whiteList-${command}`, {
+          title: `「${name}」${type}`,
+          subtitle: `指令「#燕云(十六声)?(添加|删除)(bot|全局)${name}(群|uid)?${type} +(id)」，id可用|分割`,
+          description: `设置Bot${type}时必须向对应Bot使用指令`,
+          children: [
+            components.input.group(`group-${typeKey}-${command}-global-uids`, {
+              label: `Global-UID${type}`,
+              description: `指令「#燕云(十六声)?(添加|删除)全局${name}uid${type} +(id)」，id可用|分割`,
+              data: (type === '白名单' ? WhiteListCfg : BlackListCfg).get<string>(`${command}.global.uids`, true),
+              template: components.input.string(`template-${typeKey}-${command}-global`, {
+                label: 'UID'
+              })
+            }),
+            // components.input.group(`group-${typeKey}-${command}-global-members`, {
+            //   label: `Global-成员${type}`,
+            //   description: `指令「#燕云(十六声)?(添加|删除)全局${name}${type} +(id)」，id可用|分割`,
+            //   data: (type === '白名单' ? WhiteListCfg : BlackListCfg).get<string>(`${command}.global.members`, true),
+            //   template: components.input.string(`template-${typeKey}-${command}-global`, {
+            //     label: 'userId'
+            //   })
+            // }),
+            components.input.group(`group-${typeKey}-${command}-global-groups`, {
+              label: `Global-群${type}`,
+              description: `指令「#燕云(十六声)?(添加|删除)全局${name}群${type} +(id)」，id可用|分割`,
+              data: (type === '白名单' ? WhiteListCfg : BlackListCfg).get<string>(`${command}.global.groups`, true),
+              template: components.input.string(`template-${typeKey}-${command}-global`, {
+                label: 'groupId'
+              })
+            }),
+            ...Object.entries((type === '白名单' ? WhiteListCfg : BlackListCfg).get<Record<string, RosterItemType>>(command))
+              .map(([key, value]) => {
+                if (key === 'global') return []
 
-      ]
-    }),
+                return [
+                  components.input.group(`group-${typeKey}-${command}-${key}-uids`, {
+                    label: `Bot: ${key}-UID${type}`,
+                    description: `指令「#燕云(十六声)?(添加|删除)bot${key}${name}uid${type} +(id)」，id可用|分割`,
+                    data: value.uids,
+                    template: components.input.string(`template-${typeKey}-${command}-${key}`, {
+                      label: 'UID'
+                    })
+                  }),
+                  // components.input.group(`group-${typeKey}-${command}-${key}-members`, {
+                  //   label: `Bot: ${key}-成员${type}`,
+                  //   description: `指令「#燕云(十六声)?(添加|删除)bot${key}${name}${type} +(id)」，id可用|分割`,
+                  //   data: value.members,
+                  //   template: components.input.string(`template-${typeKey}-${command}-${key}`, {
+                  //     label: 'userId'
+                  //   })
+                  // }),
+                  components.input.group(`group-${typeKey}-${command}-${key}-groups`, {
+                    label: `Bot: ${key}-群${type}`,
+                    description: `指令「#燕云(十六声)?(添加|删除)bot${key}${name}群${type} +(id)」，id可用|分割`,
+                    data: value.groups,
+                    template: components.input.string(`template-${typeKey}-${command}-${key}`, {
+                      label: 'groupId'
+                    })
+                  })
+                ]
+              }).flat()]
+        })),
+      }),
+    ]).flat(),
 
-    components.divider.horizontal('divider-blackList-key'),
-    components.accordion.create('accordion-blackList-key', {
-      label: '黑名单设置',
-      children: [
-
-      ]
-    }),
   ],
 
   /** 前端点击保存之后调用的方法 */
@@ -250,8 +306,8 @@ export default defineConfig({
     'accordion-config-key': ConfigSaveEntry[]
     'accordion-command-key': CommandSaveEntry[]
     'accordion-push-key': PushSaveEntry[]
-    'accordion-whiteList-key': []
-    'accordion-blackList-key': []
+    'accordion-whiteList-key': RosterSaveEntry[]
+    'accordion-blackList-key': RosterSaveEntry[]
   }) => {
     try {
       lodash.forEach(config, (value1, key1) => {
@@ -293,11 +349,21 @@ export default defineConfig({
               cmds.addSome(defCmds, true, false)
             }
           })
-        }
-      })
+        } else if (key1 === 'accordion-whiteList-key' || key1 === 'accordion-blackList-key') {
+          value1.forEach(_children => {
+            const children = _children as RosterSaveEntry
 
-      Cfg.save()
-      CommandCfg.save()
+            lodash.forEach(children, (value2, key2) => {
+              const [, , command, botId, setKey] = key2.split('-')
+
+              const rosterList = (key1 === 'accordion-whiteList-key' ? WhiteListCfg : BlackListCfg).get<string>(`${command}.${botId}.${setKey}`, true).clear()
+              rosterList.addSome(value2, true, false)
+            })
+          })
+        }
+      });
+
+      [Cfg, CommandCfg, WhiteListCfg, BlackListCfg].forEach(cfg => cfg.save())
     } catch (err: any) {
       logger.error(err)
 
