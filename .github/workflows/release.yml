@@ -45,5 +45,5 @@ jobs:
         if: ${{ steps.release.outputs.release_created }}
       # 同步到 npmmirror.com
       - name: Sync to npmmirror.com
-        run: npm install cnpm -g && cnpm sync
+        run: npm install cnpm -g && cnpm sync --no-progress && echo "Sync completed"
         if: ${{ steps.release.outputs.release_created }}

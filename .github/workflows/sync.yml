@@ -13,4 +13,4 @@ jobs:
           node-version: 20
       # 安装 cnpm 并同步当前项目
       - name: Sync to npmmirror.com
-        run: npm install cnpm -g && cnpm sync
+        run: npm install cnpm -g && cnpm sync --no-progress && echo "Sync completed"
