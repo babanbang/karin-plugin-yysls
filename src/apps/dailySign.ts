@@ -174,8 +174,6 @@ export const AutoDailySignTask = karin.task(
   '腌鱼十六升每日定时签到',
   Cfg.get<string>(`${CommandEnum.DailySignTask}.corn`),
   async () => {
-    if (!CommandCfg.get<boolean>(`${CommandEnum.DailySignTask}.enable`)) return false
-
     SignTask(true)
 
     return true
