@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.0.7](https://github.com/babanbang/karin-plugin-yysls/compare/v1.0.6...v1.0.7) (2025-10-19)
+
+
+### Bug Fixes
+
+* 修复定时签到任务不执行 ([749ce4f](https://github.com/babanbang/karin-plugin-yysls/commit/749ce4ffd4e197ec5e7ae9584d6158284bd12c6d))
+* 拼写错误、web配置校验cron ([647d63c](https://github.com/babanbang/karin-plugin-yysls/commit/647d63c6ac61512fcc0c4227b4ab4190a5d029c9))
+
 ## [1.0.6](https://github.com/babanbang/karin-plugin-yysls/compare/v1.0.5...v1.0.6) (2025-10-17)
 
 
