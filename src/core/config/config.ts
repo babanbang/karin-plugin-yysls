@@ -16,7 +16,7 @@ const DefaultConfig: ConfigType = {
   },
   [CommandEnum.DailySignTask]: {
     auto: false,
-    corn: '0 30 8 * * *',
+    cron: '0 30 8 * * *',
     globalPush: ['Master'],
     permission: DailySignTaskPermission.Everyone
   }

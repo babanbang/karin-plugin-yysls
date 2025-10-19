@@ -34,7 +34,7 @@ export const enum DailySignTaskPermission {
 
 export interface DailySignTaskConfig {
   auto: boolean
-  corn: string
+  cron: string
   globalPush: ('Master' | 'Admin')[]
   permission: DailySignTaskPermission
 }

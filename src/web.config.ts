@@ -4,13 +4,14 @@ import { BlackListCfg, Cfg, CommandCfg, CommandType, DailySignPermission, DailyS
 import { dir } from '@/dir'
 import { Database, Dialect } from '@/module/database'
 import { CommandDescription, CommandEnum } from '@/types/apps'
+import { CronExpressionParser } from 'cron-parser'
 import { components, defineConfig, logger } from 'node-karin'
 import lodash from 'node-karin/lodash'
 
 type ConfigSaveEntry = { 'database-dialect': Dialect } &
   Record<`${CommandEnum.DailySign}-permission`, DailySignPermission> &
   Record<`${CommandEnum.DailySignTask}-auto`, boolean> &
-  Record<`${CommandEnum.DailySignTask}-corn`, string> &
+  Record<`${CommandEnum.DailySignTask}-cron`, string> &
   Record<`${CommandEnum.DailySignTask}-globalPush`, ('Master' | 'Admin')[]> &
   Record<`${CommandEnum.DailySignTask}-permission`, DailySignTaskPermission>
 
@@ -106,10 +107,10 @@ export default defineConfig({
               label: '启用自动签到任务',
               description: '关闭后只能由Bot主人及管理员手动触发签到任务'
             }),
-            components.input.string(`${CommandEnum.DailySignTask}-corn`, {
-              label: 'Corn表达式',
+            components.input.string(`${CommandEnum.DailySignTask}-cron`, {
+              label: 'Cron表达式',
               description: '设置签到任务自动执行时间',
-              defaultValue: Cfg.get<string>(`${CommandEnum.DailySignTask}.corn`),
+              defaultValue: Cfg.get<string>(`${CommandEnum.DailySignTask}.cron`),
               rules: [
 
               ]
@@ -316,6 +317,13 @@ export default defineConfig({
             const children = _children as ConfigSaveEntry
 
             lodash.forEach(children, (value2, key2) => {
+              if (/cron/g.test(key2)) {
+                try {
+                  CronExpressionParser.parse(value2 as string)
+                } catch (err) {
+                  throw new Error(`无效的Cron表达式: ${value2}`)
+                }
+              }
               Cfg.set(key2.replace(/-/g, '.'), value2, false)
             })
           })

@@ -172,7 +172,7 @@ export const DailySignTask = karin.command(
 
 export const AutoDailySignTask = karin.task(
   '腌鱼十六升每日定时签到',
-  Cfg.get<string>(`${CommandEnum.DailySignTask}.corn`),
+  Cfg.get<string>(`${CommandEnum.DailySignTask}.cron`),
   async () => {
     SignTask(true)
 
