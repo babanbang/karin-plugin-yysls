@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.3](https://github.com/babanbang/karin-plugin-yysls/compare/v1.1.2...v1.1.3) (2025-10-22)
+
+
+### Bug Fixes
+
+* 资源未正确加载 ([38f58d3](https://github.com/babanbang/karin-plugin-yysls/commit/38f58d39ed14500f132601af7a3d5b3ede390cb7))
+
 ## [1.1.2](https://github.com/babanbang/karin-plugin-yysls/compare/v1.1.1...v1.1.2) (2025-10-22)
 
 
