@@ -1,1 +1,5 @@
+export * from './equip'
+export * from './qishu'
 export * from './update'
+export * from './wuxue'
+export * from './xinfa'

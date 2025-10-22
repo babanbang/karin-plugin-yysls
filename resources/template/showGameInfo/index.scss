@@ -1,0 +1,464 @@
+@use 'sass:list';
+
+.container {
+  background-repeat: no-repeat;
+  background-position: left, top left, top right;
+  background-size: 600px auto, 600px auto, 600px auto;
+  background-position-y: 100px, 0px, -10px;
+  position: relative;
+  flex-direction: unset;
+  flex-wrap: wrap;
+
+  .logo {
+    position: absolute;
+    top: 0px;
+    left: 430px;
+    width: 160px;
+    height: 80px;
+    background-image: url('../../image/icon/logo.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    display: block;
+    z-index: 2;
+  }
+
+  .game-roleInfo {
+    padding: 15px;
+    margin-top: 10px;
+    width: 600px;
+
+    .head-info {
+      display: flex;
+      margin-bottom: 10px;
+
+      .avatar {
+        width: 80px;
+        height: 80px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        object-fit: cover;
+        background-image: url('../../image/icon/avatar-bg.png');
+        background-repeat: no-repeat;
+        background-size: cover;
+        position: relative;
+
+        img {
+          width: 65%;
+          height: 65%;
+          border-radius: 50%;
+        }
+
+        .level {
+          background-color: rgba(0, 0, 0, 0.6);
+          position: absolute;
+          font-size: 10px;
+          padding: 1px;
+          border-radius: 3px;
+          bottom: 0;
+          right: 0;
+        }
+      }
+
+      .info {
+        margin-left: 10px;
+        color: #2e2e2e;
+        font-size: 12px;
+        display: flex;
+        flex-direction: column;
+        text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 20px #111;
+
+        >* {
+          margin-top: 8px;
+        }
+
+        .name {
+          font-weight: bold;
+          font-size: 20px;
+          color: #000000;
+        }
+
+        .crDay {
+          display: flex;
+          align-items: center;
+
+          .club {
+            color: #000000;
+            padding: 1px;
+            text-shadow: none;
+            margin-left: 10px;
+            background-color: #4794ec;
+            border-radius: 5px;
+          }
+        }
+      }
+    }
+
+    .tips-info {
+      width: 100%;
+      background-image: url('../../image/icon/head-info-bg.png');
+      background-repeat: no-repeat;
+      background-size: cover;
+
+      .base,
+      .explore {
+        display: flex;
+        justify-content: center;
+
+        .item {
+          width: calc(100% /6);
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+
+          .value {
+            font-size: 18px;
+          }
+
+          .label {
+            display: flex;
+            justify-content: center;
+            font-size: 12px;
+            color: #8f752e;
+            width: 80%;
+            background-image: url('../../image/icon/head-info-label-bg.png');
+            background-repeat: no-repeat;
+            background-size: cover;
+          }
+        }
+      }
+
+      .base {
+        padding: 20px 15px 10px 15px;
+      }
+
+      .explore {
+        padding: 10px 15px 20px 15px;
+      }
+    }
+
+    .plan-info {
+      padding: 0 10px;
+      width: 100%;
+      color: #000000;
+      margin-top: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      position: relative;
+
+      .title {
+        position: absolute;
+        top: 0;
+        left: 10px;
+        display: flex;
+
+        .tip {
+          padding-left: 15px;
+          background-image: url('../../image/icon/icon_beizhan.webp');
+          background-repeat: no-repeat;
+          background-size: contain;
+        }
+
+        .zaoyi-now {
+          margin-left: 3px;
+          padding-left: 18px;
+          background-image: url('../../image/icon/icon_goose.webp');
+          background-repeat: no-repeat;
+          background-size: contain;
+
+          .dif {
+            margin-left: -5px;
+            font-size: 10px;
+            font-weight: bold;
+            color: #ff0000;
+          }
+        }
+      }
+
+      .kongfu-info {
+        width: 100%;
+        display: flex;
+        margin-top: 20px;
+
+        .kongfu {
+          width: calc((100% - 10px) / 2);
+          background-image: url('../../image/icon/bg_kongfu.png');
+          background-repeat: no-repeat;
+          background-size: contain;
+          display: flex;
+          align-items: center;
+
+          .label {
+            width: 70%;
+            display: flex;
+
+            .wuxue {
+              width: 50px;
+              height: 50px;
+            }
+
+            .name {
+              margin-left: 10px;
+              position: relative;
+              color: #fff;
+              font-size: 14px;
+              padding: 10px 0 0 20px;
+
+              .liupai {
+                position: absolute;
+                top: 8px;
+                left: 0;
+                width: 20px;
+                height: 20px;
+              }
+
+              .level {
+                margin-left: 20px;
+                color: #2c2b2b;
+                font-size: 12px;
+              }
+            }
+          }
+
+          .weapon {
+            margin-left: 5px;
+            width: 60px;
+            height: 60px;
+            position: relative;
+            background-image: url('../../image/icon/bg_kongfu_item.webp');
+            background-repeat: no-repeat;
+            background-size: contain;
+
+            img {
+              position: absolute;
+              top: 0;
+              left: 18px;
+              width: 28px;
+              height: auto;
+            }
+
+            .name {
+              position: absolute;
+              bottom: 1px;
+              right: -12px;
+              font-size: 10px;
+              color: #fff;
+            }
+          }
+
+          &:first-child {
+            margin-right: 10px;
+          }
+        }
+      }
+
+      .xinfa-info {
+        margin-top: 10px;
+        width: 100%;
+        padding: 40px 10px 10px 0;
+        background-image: url('../../image/icon/xinfa_bg.png');
+        background-repeat: no-repeat;
+        background-size: cover;
+        display: flex;
+        justify-content: end;
+        position: relative;
+        color: #fff;
+
+        .title {
+          position: absolute;
+          font-size: 22px;
+          top: 10px;
+          left: 10px;
+        }
+
+        .xinfa {
+          width: 80px;
+          height: 120px;
+          margin-right: 5px;
+          background-repeat: no-repeat;
+          background-size: contain;
+          display: flex;
+          align-items: center;
+          flex-direction: column;
+          gap: 2px;
+
+          .xinfa-image {
+            margin-top: 20px;
+            width: 50px;
+            height: 50px;
+          }
+
+          .liupai-image {
+            width: 42px;
+            height: 15px;
+          }
+
+          .rank {
+            width: 6px;
+            height: 6px;
+            margin-right: 50%;
+            border-radius: 50%;
+
+            @for $i from 0 through 10 {
+              $shadows: list.slash(0 0 0 0, 0 0 0 0);
+
+              @for $j from 1 through 4 {
+                $color: if($j < $i, if($i <=(5 + $j), #ffffff, #ffff00), #999999);
+                $shadows: list.append($shadows, ($j * 10px) 0 0 $color, comma);
+              }
+
+              &.rank-#{$i} {
+                background-color: if($i >0, if($i <=5, #ffffff, #ffff00), #999999);
+                box-shadow: $shadows;
+              }
+            }
+          }
+        }
+
+      }
+
+      .qishu-info {
+        margin-top: 10px;
+        width: 100%;
+        height: 180px;
+        display: flex;
+        color: #fff;
+        background-image: url('../../image/icon/qishu_bg.png');
+        background-repeat: no-repeat;
+        background-size: contain;
+        position: relative;
+
+        .title {
+          position: absolute;
+          font-size: 22px;
+          top: 10px;
+          left: 10px;
+        }
+
+        $top1: 35px;
+        $right1: 35px;
+        $margin-right1: 180px;
+
+        &::before {
+          content: '';
+          position: absolute;
+          top: $top1;
+          right: $right1;
+          width: 100px;
+          height: 100px;
+          background-image: url('../../image/icon/qishu_list_bg.png');
+          background-repeat: no-repeat;
+          background-size: contain;
+          z-index: 4;
+        }
+
+        &::after {
+          content: '';
+          position: absolute;
+          top: $top1;
+          right: $right1+$margin-right1;
+          width: 100px;
+          height: 100px;
+          background-image: url('../../image/icon/qishu_list_bg.png');
+          background-repeat: no-repeat;
+          background-size: contain;
+          z-index: 4;
+        }
+
+        .qishu {
+          position: absolute;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+
+          &.at-1 {
+            top: $top1 + 20px;
+            right: $right1 + $margin-right1 + 75px;
+          }
+
+          &.at-2 {
+            top: $top1 - 15px;
+            right: $right1 + $margin-right1 + 27px;
+          }
+
+          &.at-3 {
+            top: $top1 + 20px;
+            right: $right1 + $margin-right1 - 20px;
+          }
+
+          &.at-4 {
+            top: $top1 + 65px;
+            right: $right1 + $margin-right1 + 26px;
+          }
+
+          &.at-5 {
+            top: $top1 + 20px;
+            right: $right1 + 65px;
+          }
+
+          &.at-6 {
+            top: $top1 - 15px;
+            right: $right1 + 27px;
+          }
+
+          &.at-7 {
+            top: $top1 + 20px;
+            right: $right1 - 20px;
+          }
+
+          &.at-8 {
+            top: $top1 + 65px;
+            right: $right1 + 26px;
+          }
+
+          .qishu-image {
+            width: 45px;
+            height: 45px;
+          }
+
+          .level {
+            width: 3px;
+            height: 3px;
+            margin: -5px 25px 2px 0;
+            border-radius: 50%;
+
+            @for $i from 0 through 10 {
+              $shadows: list.slash(0 0 0 0, 0 0 0 0);
+
+              @for $j from 1 through 4 {
+                $color: if($j < $i, if($i <=(5 + $j), #ffffff, #ffff00), #999999);
+                $shadows: list.append($shadows, ($j * 6px) 0 0 $color, comma);
+              }
+
+              &.level-#{$i} {
+                background-color: if($i >0, if($i <=5, #ffffff, #ffff00), #999999);
+                box-shadow: $shadows;
+              }
+            }
+          }
+
+          .name {
+            font-size: 12px;
+
+            &.at-2,
+            &.at-6 {
+              position: absolute;
+              top: -6px;
+              left: 50%;
+              transform: translateX(-50%);
+              width: max-content;
+            }
+          }
+        }
+
+      }
+    }
+  }
+
+  .game-equipInfo {
+    width: 600px;
+  }
+}

@@ -3,7 +3,7 @@ export const enum CommandEnum {
   DailySign = 'dailySign',
   DailySignTask = 'dailySignTask',
   ShowRoleList = 'showRoleList',
-  GameInfo = 'gameInfo',
+  showGameInfo = 'showGameInfo',
 }
 
 export enum CommandDescription {
@@ -11,5 +11,5 @@ export enum CommandDescription {
   dailySign = '每日签到',
   dailySignTask = '每日签到任务',
   showRoleList = '角色列表',
-  gameInfo = '游戏信息查询',
+  showGameInfo = '角色信息查询',
 }

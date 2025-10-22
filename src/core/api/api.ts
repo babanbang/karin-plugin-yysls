@@ -1,3 +1,4 @@
+import { Equip, Qishu, Wuxue } from '@/core/resources'
 import { CumulativeFigResponse, DailySignResponse, GameInfoResponse } from '@/types'
 import { DefineApi } from './define'
 
@@ -12,6 +13,22 @@ export const getGameInfo = new DefineApi<
     Method: 'GET',
     HeaderFn: self.Headers,
     Url: new URL(HOST + 'game/regional/data?access_token=' + self.UserInfo.accessToken),
+    Result: (response) => {
+      const responseData = response.data
+
+      responseData.data.kongfuMain = responseData.data.kongfuMain
+        ? { ...Wuxue.get(responseData.data.kongfuMain, responseData.data.kongMainLevel), equip: Equip.get(responseData.data.wearEquips['1']) }
+        : undefined
+      responseData.data.kongfuSub = responseData.data.kongfuSub
+        ? { ...Wuxue.get(responseData.data.kongfuSub, responseData.data.kongSubLevel), equip: Equip.get(responseData.data.wearEquips['2']) }
+        : undefined
+
+      responseData.data.battleQs = Object.entries(responseData.data.battleQs).map(([idx, qs]) => (
+        { idx, ...Qishu.get(String(qs), responseData.data.battleQsLevel[String(qs)]) }
+      ))
+
+      return responseData
+    }
   })
 )
 

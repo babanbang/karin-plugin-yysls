@@ -292,7 +292,7 @@ const Sign = async (accountInfo: AccountInfoType, isTask: boolean): Promise<{
     cumulativeFigList: CumulativeFigItem[]
   }
 }> => {
-  const signResult = await dailySign.new(accountInfo).requestCache(
+  const signResult = await dailySign.init(accountInfo).requestCache(
     `dailySign:${accountInfo.uid}`, common.getRemainSecondsOfToday() - 10, null
   )
 
@@ -305,7 +305,7 @@ const Sign = async (accountInfo: AccountInfoType, isTask: boolean): Promise<{
       }
     // eslint-disable-next-line no-fallthrough
     case 200: {
-      const cumulativeFigData = await getCumulativeFigData.new(accountInfo).requestCache(
+      const cumulativeFigData = await getCumulativeFigData.init(accountInfo).requestCache(
         `${dir.name}:CumulativeFigData:${accountInfo.uid}`, common.getRemainSecondsOfToday() - 10, null
       )
 

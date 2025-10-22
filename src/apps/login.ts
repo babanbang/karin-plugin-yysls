@@ -4,7 +4,7 @@ import { CommandCfg } from '@/core/config'
 import { User } from '@/core/user'
 import { CommandEnum } from '@/types/apps'
 import karin from 'node-karin'
-import { showRoleList } from './gmeInfo'
+import { showRoleList } from './roleList'
 
 const LoginCmd = Command.getCommand(CommandEnum.Login, '')
 export const login = karin.command(
@@ -30,9 +30,7 @@ export const login = karin.command(
       return true
     }
 
-    const gameInfo = await getGameInfo.new({
-      accessToken: token
-    }).request(null)
+    const gameInfo = await getGameInfo.init({ accessToken: token }).request(null)
 
     switch (gameInfo.code) {
       case -1:

@@ -16,38 +16,34 @@ export class DefineApi<
     this.#apiInfo = apiInfo
   }
 
-  new (userInfo: U) {
+  init (userInfo: U) {
     this.UserInfo = userInfo
 
-    return this
-  }
+    return {
+      request: async (data: D): Promise<R> => await this.#requestData(this.#apiInfo, data),
+      requestCache: async (key: string, seconds: number, data: D): Promise<R> => {
+        const redisKey = `${dir.name}:apiCache:${key}`
 
-  async request (data: D): Promise<R> {
-    return await this.#requestData(this.#apiInfo, data)
-  }
+        const cache = await redis.get(redisKey)
+        if (cache) {
+          try {
+            return JSON.parse(cache) as R
+          } catch (err) {
+            logger.error(`[${dir.name}] redisCache(${key}) json parse error:`, err)
 
-  /**
-   * 优先获取缓存数据
-   */
-  async requestCache (key: string, seconds: number, data: D): Promise<R> {
-    const redisKey = `${dir.name}:apiCache:${key}`
+            await redis.del(redisKey)
+          }
+        }
 
-    const cache = await redis.get(redisKey)
-    if (cache) {
-      try {
-        return JSON.parse(cache) as R
-      } catch (err) {
-        logger.error(`[${dir.name}] redisCache(${key}) json parse error:`, err)
+        const result = await this.#requestData(this.#apiInfo, data)
+
+        if (seconds > 0) {
+          await redis.setEx(key, seconds, JSON.stringify(result))
+        }
+
+        return result
       }
     }
-
-    const result = await this.#requestData(this.#apiInfo, data)
-
-    if (seconds > 0) {
-      await redis.setEx(key, seconds, JSON.stringify(result))
-    }
-
-    return result
   }
 
   async #requestData (apiInfo: ApiInfoFn<any, any, any>, data: any): Promise<any> {

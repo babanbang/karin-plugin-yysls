@@ -2,6 +2,9 @@ export interface ImageMapType {
   id: string
   image: string
   icon: string
+
+  bg?: string
+  name?: string
 }
 
 export interface BaseImage {
@@ -34,6 +37,14 @@ export interface CardbgImage extends BaseImage {
 export interface WuxueImage extends BaseImage {
   name: string
   liupai_pic_url: string
+}
+
+export interface XinfaImage {
+  id: number
+  name: string
+  icon_url: string
+  bg_icon_url: string
+  liupai_pic_big_url: string
 }
 
 export interface FashionLevelImage {

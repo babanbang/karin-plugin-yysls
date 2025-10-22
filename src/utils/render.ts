@@ -1,9 +1,10 @@
 import { dir } from '@/dir'
 import { CommandEnum } from '@/types/apps'
-import karin from 'node-karin'
+import karin, { config } from 'node-karin'
 import path from 'node:path'
 
-export const renderTemplate = async (template: CommandEnum, rendeDdata: Record<string, any>) => 'base64://' + await karin.render({
+export const renderTemplate = async (template: CommandEnum, rendeDdata: Record<string, any>, type: 'png' | 'jpeg' | 'webp' = 'jpeg') => 'base64://' + await karin.render({
+  name: `${dir.name}/${template}`,
   data: {
     ...rendeDdata,
     plugin: {
@@ -16,8 +17,13 @@ export const renderTemplate = async (template: CommandEnum, rendeDdata: Record<s
       },
       defaultLayout: path.join(dir.pluginDir, 'resources/template/layout/default.html')
     },
+    karin: {
+      version: config.pkg().version
+    }
   },
-  name: `${dir.name}/${template}`,
+
+  type,
+  omitBackground: type === 'png',
   selector: 'container',
   file: path.join(dir.pluginDir, `resources/template/${template}/index.html`),
   setViewport: {

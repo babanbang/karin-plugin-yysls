@@ -1,9 +1,11 @@
 import { Dialect } from '@/module/database'
+import { CommandEnum } from '@/types/apps'
 
 export interface ConfigType {
   database: DataBaseConfig
-  dailySign: DailySignConfig
-  dailySignTask: DailySignTaskConfig
+  [CommandEnum.DailySign]: DailySignConfig
+  [CommandEnum.DailySignTask]: DailySignTaskConfig
+  [CommandEnum.showGameInfo]: GameInfoConfig
 }
 
 export interface DataBaseConfig {
@@ -37,4 +39,8 @@ export interface DailySignTaskConfig {
   cron: string
   globalPush: ('Master' | 'Admin')[]
   permission: DailySignTaskPermission
+}
+
+export interface GameInfoConfig {
+  pagination: boolean
 }

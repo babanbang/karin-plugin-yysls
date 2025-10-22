@@ -19,8 +19,8 @@ const DefaultCommand: CommandType = {
   [CommandEnum.ShowRoleList]: {
     cmds: ['燕云(十六声)?(角色列表|uid)'], enable: true, default: true, flags: false
   },
-  [CommandEnum.GameInfo]: {
-    cmds: ['燕云(十六声)?角色信息'], enable: true, default: true, flags: false
+  [CommandEnum.showGameInfo]: {
+    cmds: ['燕云(十六声)?角色(信息|详情)'], enable: true, default: true, flags: false
   }
 }
 

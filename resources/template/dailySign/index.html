@@ -11,7 +11,7 @@
 <span class="logo"></span>
 
 <script>
-  document.documentElement.style.setProperty('--length', "{{signList.length}}" < 5 ? "{{signList.length}}" : 4);
+  document.documentElement.style.setProperty('--length', '{{signList.length < 5 ? signList.length : 4}}');
 </script>
 
 <div class="daily-sign-list">

@@ -76,3 +76,28 @@ export async function pushMsgTo (to: 'Contact' | 'Master' | 'Admin', data: {
   }
   return true
 }
+
+export const getExploreLevel = (_num: number) => {
+  const Tsd = [{
+    level: 6, score: 9000, name: '名震一方'
+  }, {
+    level: 5, score: 6000, name: '威名远扬'
+  }, {
+    level: 4, score: 4000, name: '功绩显赫'
+  }, {
+    level: 3, score: 3000, name: '登堂入室'
+  }, {
+    level: 2, score: 2000, name: '声名鹊起'
+  }, {
+    level: 1, score: 1000, name: '初来乍到'
+  }, {
+    level: 0, score: 0, name: '默默无闻'
+  }]
+
+  const num = Math.max(0, Number(_num))
+  for (const TsdItem of Tsd) {
+    if (num >= TsdItem.score) {
+      return { ...TsdItem, value: num }
+    }
+  }
+}

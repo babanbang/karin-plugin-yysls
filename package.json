@@ -19,6 +19,9 @@
     "pub": "npm publish --access public"
   },
   "main": "lib/index.js",
+  "engines": {
+    "karin": "^1.12.0"
+  },
   "dependencies": {
     "md5": "^2.3.0",
     "sequelize": "^6.37.7",
