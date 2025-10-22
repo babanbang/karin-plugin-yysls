@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.1.4](https://github.com/babanbang/karin-plugin-yysls/compare/v1.1.3...v1.1.4) (2025-10-22)
+
+
+### Bug Fixes
+
+* 优化布局 ([fba0719](https://github.com/babanbang/karin-plugin-yysls/commit/fba0719657ae5f32b554fe5daba7fe86cfd34d73))
+* 角色信息不显示探索度 ([77bccb0](https://github.com/babanbang/karin-plugin-yysls/commit/77bccb0cc65ca597240a864d2b63a04090521efa))
+
 ## [1.1.3](https://github.com/babanbang/karin-plugin-yysls/compare/v1.1.2...v1.1.3) (2025-10-22)
 
 
