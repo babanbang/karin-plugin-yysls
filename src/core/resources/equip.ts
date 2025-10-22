@@ -1,6 +1,6 @@
 import { dir } from '@/dir'
 import { EquipItem, ImageMapType } from '@/types/core/resources'
-import { logger, readJsonSync, watch } from 'node-karin'
+import { existsSync, logger, readJsonSync, watch } from 'node-karin'
 import path from 'node:path'
 
 export const Equip = new class {
@@ -8,7 +8,11 @@ export const Equip = new class {
   #map = new Map<string, EquipItem>()
 
   load () {
-    const equipData: ImageMapType[] = readJsonSync(this.listPath)
+    if (!existsSync(this.listPath)) {
+      logger.error('装备资源未更新：list.json 文件不存在')
+    }
+
+    const equipData: ImageMapType[] = readJsonSync(this.listPath) || []
     this.#map.clear()
 
     equipData.forEach(item => {

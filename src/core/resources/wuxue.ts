@@ -1,6 +1,6 @@
 import { dir } from '@/dir'
 import { ImageMapType, WuxueItem } from '@/types'
-import { logger, readJsonSync, watch } from 'node-karin'
+import { existsSync, logger, readJsonSync, watch } from 'node-karin'
 import path from 'node:path'
 
 const liupaiMap = new Map([
@@ -17,7 +17,10 @@ export const Wuxue = new class {
   #map = new Map<string, WuxueItem>()
 
   load () {
-    const wuxueData: ImageMapType[] = readJsonSync(this.listPath)
+    if (!existsSync(this.listPath)) {
+      logger.error('武学资源未更新：list.json 文件不存在')
+    }
+    const wuxueData: ImageMapType[] = readJsonSync(this.listPath) || []
     this.#map.clear()
 
     wuxueData.forEach(item => {

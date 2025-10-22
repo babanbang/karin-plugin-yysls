@@ -10,7 +10,7 @@ import { Wuxue } from './wuxue'
 import { Xinfa } from './xinfa'
 
 /** @description 是否首次加载 */
-let first = true
+let First = true
 
 export const ResourcesUpdate = new class {
   /**
@@ -24,7 +24,7 @@ export const ResourcesUpdate = new class {
         const redisKey = `${dir.name}:resourcesUpdate:${key}`
         if (!force && await redis.get(redisKey)) { return true }
 
-        await (this as any)[key](key, force)
+        await (this as any)[key](key, First)
 
         await redis.setEx(redisKey, 3600 * 8, '1')
 
@@ -32,11 +32,7 @@ export const ResourcesUpdate = new class {
       })()
     }
 
-    for (const res of [Equip, Qishu, Wuxue, Xinfa]) {
-      first && res.load().watch()
-    }
-
-    first = false
+    First = false
   }
 
   /** @description 头像 */
@@ -49,21 +45,25 @@ export const ResourcesUpdate = new class {
   }
 
   /** @description 奇术 */
-  async qishu (key: string) {
+  async qishu (key: string, first: boolean) {
     const qishuData: string = (await axios.get('https://www.yysls.cn/res/config/data/qishu.txt')).data
     const qishuDataDecode = decode<Record<string, QishuImage>>('奇术', qishuData)
     qishuDataDecode && await this.download(key, Object.values(qishuDataDecode).map(QishuImage => (
       { id: String(QishuImage.id), name: QishuImage.name, image: QishuImage.pic_url, icon: '' }
     )), true)
+
+    first && Qishu.load().watch()
   }
 
   /** @description 装备 */
-  async equip (key: string) {
+  async equip (key: string, first: boolean) {
     const equipData: string = (await axios.get('https://www.yysls.cn/res/config/data/equip.txt')).data
     const equipDataDecode = decode<Record<string, EquipImage>>('装备', equipData)
     equipDataDecode && await this.download(key, Object.values(equipDataDecode).map(EquipImage => (
       { id: String(EquipImage.id), name: EquipImage.name, image: EquipImage.icon_url, icon: EquipImage.long_icon_url }
     )), true)
+
+    first && Equip.load().watch()
   }
 
   /** @description 门派 */
@@ -85,21 +85,25 @@ export const ResourcesUpdate = new class {
   }
 
   /** @description 武学 */
-  async wuxue (key: string) {
+  async wuxue (key: string, first: boolean) {
     const wuxueData: string = (await axios.get('https://www.yysls.cn/res/config/data/kongfu.txt')).data
     const wuxueDataDecode = decode<Record<string, WuxueImage>>('武学', wuxueData)
     wuxueDataDecode && await this.download(key, Object.values(wuxueDataDecode).map(WuxueImage => (
       { id: String(WuxueImage.id), name: WuxueImage.name, image: WuxueImage.pic_url, icon: WuxueImage.liupai_pic_url }
     )), true, { icon: true })
+
+    first && Wuxue.load().watch()
   }
 
   /** @description 心法 */
-  async xinfa (key: string) {
+  async xinfa (key: string, first: boolean) {
     const xinfaData: string = (await axios.get('https://www.yysls.cn/res/config/data/xinfa.txt')).data
     const xinfaDataDecode = decode<Record<string, XinfaImage>>('武学', xinfaData)
     xinfaDataDecode && await this.download(key, Object.values(xinfaDataDecode).map(XinfaImage => (
       { id: String(XinfaImage.id), name: XinfaImage.name, image: XinfaImage.icon_url, icon: XinfaImage.liupai_pic_big_url, bg: XinfaImage.bg_icon_url }
     )), true, { icon: true, bg: true })
+
+    first && Xinfa.load().watch()
   }
 
   /** @description 风华 */
@@ -116,7 +120,7 @@ export const ResourcesUpdate = new class {
 
     saveList && writeJsonSync(path.join(dir.ResourcesDir, 'images', name, 'list.json'), ImageMap)
 
-    Promise.all(ImageMap.map(async ({ id, image, icon, bg }) => {
+    ImageMap.map(async ({ id, image, icon, bg }) => {
       const imagePath = path.join(dir.ResourcesDir, 'images', name, `${id}.png`)
       if (image && !existsSync(imagePath)) {
         await downFile(image, imagePath)
@@ -131,6 +135,6 @@ export const ResourcesUpdate = new class {
       if (!ignore.bg && bg && !existsSync(bgPath)) {
         await downFile(bg, bgPath)
       }
-    }))
+    })
   }
 }()

@@ -1,6 +1,6 @@
 import { dir } from '@/dir'
 import { ImageMapType, XinfaItem } from '@/types'
-import { logger, readJsonSync, watch } from 'node-karin'
+import { existsSync, logger, readJsonSync, watch } from 'node-karin'
 import path from 'node:path'
 
 const bgMap = new Map([
@@ -24,7 +24,10 @@ export const Xinfa = new class {
   #map = new Map<string, XinfaItem>()
 
   load () {
-    const xinfaData: ImageMapType[] = readJsonSync(this.listPath)
+    if (!existsSync(this.listPath)) {
+      logger.error('心法资源未更新：list.json 文件不存在')
+    }
+    const xinfaData: ImageMapType[] = readJsonSync(this.listPath) || []
     this.#map.clear()
 
     xinfaData.forEach(item => {
