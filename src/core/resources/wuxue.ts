@@ -11,6 +11,8 @@ const liupaiMap = new Map([
   ['20500', ''], ['20700', ''], ['20501', '风'], ['20701', '风'], ['20603', '尘'], ['20702', '尘']
 ])
 
+let First = true
+
 const resDir = path.join(dir.pluginDir, 'resources').replace(/\\/g, '/')
 export const Wuxue = new class {
   listPath = path.join(dir.ResourcesDir, 'images', 'wuxue', 'list.json')
@@ -19,7 +21,10 @@ export const Wuxue = new class {
   load () {
     if (!existsSync(this.listPath)) {
       logger.error('武学资源未更新：list.json 文件不存在')
+    } else {
+      First = false
     }
+
     const wuxueData: ImageMapType[] = readJsonSync(this.listPath) || []
     this.#map.clear()
 
@@ -44,6 +49,8 @@ export const Wuxue = new class {
   }
 
   get (_id: string, level: number): WuxueItem & { level: number } {
+    First && this.load()
+
     const id = String(_id)
 
     const wuxue = this.#map.get(id)

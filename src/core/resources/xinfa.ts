@@ -18,6 +18,8 @@ const bgMap = new Map([
   ['551', { bg: 3, liupai: '钧' }], ['552', { bg: 2, liupai: '钧' }], ['553', { bg: 2, liupai: '钧' }], ['554', { bg: 2, liupai: '钧' }]
 ])
 
+let First = true
+
 const resDir = path.join(dir.pluginDir, 'resources').replace(/\\/g, '/')
 export const Xinfa = new class {
   listPath = path.join(dir.ResourcesDir, 'images', 'xinfa', 'list.json')
@@ -26,7 +28,10 @@ export const Xinfa = new class {
   load () {
     if (!existsSync(this.listPath)) {
       logger.error('心法资源未更新：list.json 文件不存在')
+    } else {
+      First = false
     }
+
     const xinfaData: ImageMapType[] = readJsonSync(this.listPath) || []
     this.#map.clear()
 
@@ -51,6 +56,8 @@ export const Xinfa = new class {
   }
 
   get (_id: string, rank: number): XinfaItem & { rank: number } {
+    First && this.load()
+
     const id = String(_id)
 
     const xinfa = this.#map.get(id)

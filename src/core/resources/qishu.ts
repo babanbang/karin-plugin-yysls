@@ -3,6 +3,7 @@ import { ImageMapType, QishuItem } from '@/types/core/resources'
 import { existsSync, logger, readJsonSync, watch } from 'node-karin'
 import path from 'node:path'
 
+let First = true
 export const Qishu = new class {
   listPath = path.join(dir.ResourcesDir, 'images', 'qishu', 'list.json')
   #map = new Map<string, QishuItem>()
@@ -10,7 +11,10 @@ export const Qishu = new class {
   load () {
     if (!existsSync(this.listPath)) {
       logger.error('奇术资源未更新：list.json 文件不存在')
+    } else {
+      First = false
     }
+
     const equipData: ImageMapType[] = readJsonSync(this.listPath) || []
     this.#map.clear()
 
@@ -32,6 +36,8 @@ export const Qishu = new class {
   }
 
   get (_id: string, level: number): QishuItem & { level: number } {
+    First && this.load()
+
     const id = String(_id)
 
     const qishu = this.#map.get(id)

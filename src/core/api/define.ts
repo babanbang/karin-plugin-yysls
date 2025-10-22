@@ -75,7 +75,7 @@ export class DefineApi<
       return null as any
     }
 
-    const res = Result ? Result(response) : response.data
+    const res = Result ? await Result(response) : response.data
 
     logger.debug(`[${dir.name}] requst-success(${logger.green(`${Date.now() - start}ms`)}): ${JSON.stringify(params, null, 2)} -> ${JSON.stringify(res, null, 2)}`)
 

@@ -3,6 +3,8 @@ import { EquipItem, ImageMapType } from '@/types/core/resources'
 import { existsSync, logger, readJsonSync, watch } from 'node-karin'
 import path from 'node:path'
 
+let First = true
+
 export const Equip = new class {
   listPath = path.join(dir.ResourcesDir, 'images', 'equip', 'list.json')
   #map = new Map<string, EquipItem>()
@@ -10,6 +12,8 @@ export const Equip = new class {
   load () {
     if (!existsSync(this.listPath)) {
       logger.error('装备资源未更新：list.json 文件不存在')
+    } else {
+      First = false
     }
 
     const equipData: ImageMapType[] = readJsonSync(this.listPath) || []
@@ -34,6 +38,8 @@ export const Equip = new class {
   }
 
   get (_id: string): EquipItem {
+    First && this.load()
+
     const id = String(_id)
 
     const equip = this.#map.get(id)

@@ -1,5 +1,6 @@
 import { Equip, Qishu, Wuxue } from '@/core/resources'
 import { CumulativeFigResponse, DailySignResponse, GameInfoResponse } from '@/types'
+import { AccountInfoDB } from '../database'
 import { DefineApi } from './define'
 
 const HOST = 'https://s3.game.163.com/7540694694f2dddc/'
@@ -13,7 +14,7 @@ export const getGameInfo = new DefineApi<
     Method: 'GET',
     HeaderFn: self.Headers,
     Url: new URL(HOST + 'game/regional/data?access_token=' + self.UserInfo.accessToken),
-    Result: (response) => {
+    Result: async (response) => {
       const responseData = response.data
 
       responseData.data.kongfuMain = responseData.data.kongfuMain
@@ -26,6 +27,16 @@ export const getGameInfo = new DefineApi<
       responseData.data.battleQs = Object.entries(responseData.data.battleQs).map(([idx, qs]) => (
         { idx, ...Qishu.get(String(qs), responseData.data.battleQsLevel[String(qs)]) }
       ))
+
+      const account = await (await AccountInfoDB()).findByPk(responseData.data.roleId)
+      if (account) {
+        await account.save({
+          name: responseData.data.roleName,
+          level: responseData.data.level,
+          club: responseData.data.clubName,
+          avatar: responseData.data.roleAvatar
+        })
+      }
 
       return responseData
     }

@@ -14,5 +14,5 @@ export type ApiInfoFn<
   Options?: Omit<AxiosRequestConfig, 'url' | 'method' | 'data' | 'headers'>
   HeaderFn: () => Record<string, string> | Promise<Record<string, string>>
   /** @description 对响应数据进行处理 */
-  Result?: (response: AxiosResponse) => R
+  Result?: (response: AxiosResponse) => Promise<R>
 }
