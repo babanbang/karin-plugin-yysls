@@ -23,11 +23,6 @@ export const Xinfa = new class {
   listPath = path.join(dir.ResourcesDir, 'images', 'xinfa', 'list.json')
   #map = new Map<string, XinfaItem>()
 
-  constructor () {
-    this.load()
-    watch(this.listPath, () => { this.load() })
-  }
-
   load () {
     const xinfaData: ImageMapType[] = readJsonSync(this.listPath)
     this.#map.clear()
@@ -42,6 +37,14 @@ export const Xinfa = new class {
         liupai_icon: bg?.liupai ? `${resDir}/image/liupai/${bg.liupai}_big.png` : item.icon
       })
     })
+
+    return {
+      watch: () => {
+        watch(this.listPath, () => {
+          this.load()
+        })
+      }
+    }
   }
 
   get (_id: string, rank: number): XinfaItem & { rank: number } {

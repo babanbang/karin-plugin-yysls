@@ -16,14 +16,6 @@ export const Wuxue = new class {
   listPath = path.join(dir.ResourcesDir, 'images', 'wuxue', 'list.json')
   #map = new Map<string, WuxueItem>()
 
-  constructor () {
-    this.load()
-
-    watch(this.listPath, () => {
-      this.load()
-    })
-  }
-
   load () {
     const wuxueData: ImageMapType[] = readJsonSync(this.listPath)
     this.#map.clear()
@@ -38,6 +30,14 @@ export const Wuxue = new class {
         liupai_icon: liupai ? `${resDir}/image/liupai/${liupai}.png` : item.icon
       })
     })
+
+    return {
+      watch: () => {
+        watch(this.listPath, () => {
+          this.load()
+        })
+      }
+    }
   }
 
   get (_id: string, level: number): WuxueItem & { level: number } {

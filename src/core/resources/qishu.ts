@@ -7,14 +7,6 @@ export const Qishu = new class {
   listPath = path.join(dir.ResourcesDir, 'images', 'qishu', 'list.json')
   #map = new Map<string, QishuItem>()
 
-  constructor () {
-    this.load()
-
-    watch(this.listPath, () => {
-      this.load()
-    })
-  }
-
   load () {
     const equipData: ImageMapType[] = readJsonSync(this.listPath)
     this.#map.clear()
@@ -26,6 +18,14 @@ export const Qishu = new class {
         image: `${dir.ResourcesDir}/images/qishu/${item.id}.png`
       })
     })
+
+    return {
+      watch: () => {
+        watch(this.listPath, () => {
+          this.load()
+        })
+      }
+    }
   }
 
   get (_id: string, level: number): QishuItem & { level: number } {

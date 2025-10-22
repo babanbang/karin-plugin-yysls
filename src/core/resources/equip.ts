@@ -7,14 +7,6 @@ export const Equip = new class {
   listPath = path.join(dir.ResourcesDir, 'images', 'equip', 'list.json')
   #map = new Map<string, EquipItem>()
 
-  constructor () {
-    this.load()
-
-    watch(this.listPath, () => {
-      this.load()
-    })
-  }
-
   load () {
     const equipData: ImageMapType[] = readJsonSync(this.listPath)
     this.#map.clear()
@@ -27,6 +19,14 @@ export const Equip = new class {
         long_icon: `${dir.ResourcesDir}/images/equip/${item.id}_icon.png`
       })
     })
+
+    return {
+      watch: () => {
+        watch(this.listPath, () => {
+          this.load()
+        })
+      }
+    }
   }
 
   get (_id: string): EquipItem {

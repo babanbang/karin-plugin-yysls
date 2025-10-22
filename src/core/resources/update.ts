@@ -4,6 +4,13 @@ import { downFile, existsSync, existToMkdirSync, logger, redis, writeJsonSync } 
 import axios from 'node-karin/axios'
 import path from 'node:path'
 import { decode } from './decoe'
+import { Equip } from './equip'
+import { Qishu } from './qishu'
+import { Wuxue } from './wuxue'
+import { Xinfa } from './xinfa'
+
+/** @description 是否首次加载 */
+let first = true
 
 export const ResourcesUpdate = new class {
   /**
@@ -24,6 +31,12 @@ export const ResourcesUpdate = new class {
         return true
       })()
     }
+
+    for (const res of [Equip, Qishu, Wuxue, Xinfa]) {
+      first && res.load().watch()
+    }
+
+    first = false
   }
 
   /** @description 头像 */
