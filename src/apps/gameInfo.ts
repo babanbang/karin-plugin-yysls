@@ -5,7 +5,7 @@ import { Xinfa } from '@/core/resources/xinfa'
 import { User } from '@/core/user'
 import { XinfaItem } from '@/types'
 import { CommandEnum } from '@/types/apps'
-import { renderTemplate } from '@/utils'
+import { common, renderTemplate } from '@/utils'
 import karin, { segment } from 'node-karin'
 
 export const showGameInfo = karin.command(
@@ -49,7 +49,7 @@ export const showGameInfo = karin.command(
         xinfa: (XinfaItem & { rank: number })[]
         qishu: GameInfoResponse['data']['battleQs']
       }
-      // exploreInfo: { area: string; level: number; score: number; name: string; value: number }[]
+      exploreInfo: { area: string; level: number; score: number; name: string; value: number }[]
       pagination: boolean
     } = {
       baseInfo: {
@@ -88,15 +88,15 @@ export const showGameInfo = karin.command(
         xinfa: gameInfo.data.passiveSlots.map(id => Xinfa.get(id, gameInfo.data.xinfaInfo[id].rank)),
         qishu: gameInfo.data.battleQs
       },
-      // exploreInfo: [{
-      //   area: '清河', ...common.getExploreLevel(gameInfo.data.scores58)!
-      // }, {
-      //   area: '开封', ...common.getExploreLevel(gameInfo.data.scores59)!
-      // }, {
-      //   area: '河西', ...common.getExploreLevel(gameInfo.data.scores60)!
-      // }, {
-      //   area: '不见山', ...common.getExploreLevel(gameInfo.data.scores61)!
-      // }],
+      exploreInfo: [{
+        area: '清河', ...common.getExploreLevel(gameInfo.data.scores58)!
+      }, {
+        area: '开封', ...common.getExploreLevel(gameInfo.data.scores59)!
+      }, {
+        area: '河西', ...common.getExploreLevel(gameInfo.data.scores60)!
+      }, {
+        area: '不见山', ...common.getExploreLevel(gameInfo.data.scores61)!
+      }],
       pagination: Cfg.get<boolean>(`${CommandEnum.showGameInfo}.pagination`)
     }
 
