@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://github.com/babanbang/karin-plugin-yysls/compare/v1.0.7...v1.1.0) (2025-10-22)
+
+
+### Features
+
+* 角色信息查询(装备、面板待完善)，Karin&gt;=1.12.0 ([fe4060a](https://github.com/babanbang/karin-plugin-yysls/commit/fe4060a7f966dc720ec90c6556389ebb5ca7d28f))
+
 ## [1.0.7](https://github.com/babanbang/karin-plugin-yysls/compare/v1.0.6...v1.0.7) (2025-10-19)
 
 
