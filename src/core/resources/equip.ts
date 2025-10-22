@@ -23,8 +23,8 @@ export const Equip = new class {
       this.#map.set(item.id, {
         id: item.id,
         name: item.name!,
-        image: `${dir.ResourcesDir}/images/equip/${item.id}.png`,
-        long_icon: `${dir.ResourcesDir}/images/equip/${item.id}_icon.png`
+        image: `images/equip/${item.id}.png`,
+        long_icon: `images/equip/${item.id}_icon.png`
       })
     })
 

@@ -20,7 +20,6 @@ const bgMap = new Map([
 
 let First = true
 
-const resDir = path.join(dir.pluginDir, 'resources').replace(/\\/g, '/')
 export const Xinfa = new class {
   listPath = path.join(dir.ResourcesDir, 'images', 'xinfa', 'list.json')
   #map = new Map<string, XinfaItem>()
@@ -37,12 +36,16 @@ export const Xinfa = new class {
 
     xinfaData.forEach(item => {
       const bg = bgMap.get(item.id)
+      if (!bg) {
+        logger.error(`心法(bgMap:${item.id})需要更新，请提交issue`)
+      }
+
       this.#map.set(item.id, {
         id: item.id,
         name: item.name!,
-        image: `${dir.ResourcesDir}/images/xinfa/${item.id}.png`,
-        bg_icon: bg?.bg ? `${resDir}/image/xinfa/${bg.bg}_bg.png` : item.bg!,
-        liupai_icon: bg?.liupai ? `${resDir}/image/liupai/${bg.liupai}_big.png` : item.icon
+        image: `/images/xinfa/${item.id}.png`,
+        bg_icon: `/image/xinfa/${bg?.bg}_bg.png`,
+        liupai_icon: `/image/liupai/${bg?.liupai}_big.png`
       })
     })
 

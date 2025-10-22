@@ -13,7 +13,6 @@ const liupaiMap = new Map([
 
 let First = true
 
-const resDir = path.join(dir.pluginDir, 'resources').replace(/\\/g, '/')
 export const Wuxue = new class {
   listPath = path.join(dir.ResourcesDir, 'images', 'wuxue', 'list.json')
   #map = new Map<string, WuxueItem>()
@@ -30,12 +29,16 @@ export const Wuxue = new class {
 
     wuxueData.forEach(item => {
       const liupai = liupaiMap.get(item.id)
+      if (!liupai) {
+        logger.error(`武学(liupaiMap:${item.id})需要更新，请提交issue`)
+      }
 
       this.#map.set(item.id, {
         id: item.id,
         name: item.name!,
-        image: `${dir.ResourcesDir}/images/wuxue/${item.id}.png`,
-        liupai_icon: liupai ? `${resDir}/image/liupai/${liupai}.png` : item.icon
+        image: `images/wuxue/${item.id}.png`,
+        liupai,
+        liupai_icon: `image/liupai/${liupai}.png`
       })
     })
 

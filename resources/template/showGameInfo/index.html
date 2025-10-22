@@ -77,15 +77,15 @@
         <div class="label">
           <img class="wuxue" src="{{planInfo.kongfu.main.image}}" />
           <div class="name">
-            {{if planInfo.kongfu.sub.liupai_icon}}
-            <img class="liupai" src="{{planInfo.kongfu.main.liupai_icon}}" />
+            {{if planInfo.kongfu.main.liupai}}
+            <img class="liupai" src="{{plugin.resources.download}}/{{planInfo.kongfu.main.liupai_icon}}" />
             {{/if}}
             {{planInfo.kongfu.main.name}}
             <span class="level"><br>Lv.{{planInfo.kongfu.main.level}}</span>
           </div>
         </div>
         <div class="weapon">
-          <img src="{{planInfo.kongfu.main.equip.long_icon}}" />
+          <img src="{{plugin.resources.download}}/{{planInfo.kongfu.main.equip.long_icon}}" />
           <span class="name">{{planInfo.kongfu.main.equip.name}}</span>
         </div>
         {{else}}
@@ -93,20 +93,21 @@
         <div class="weapon"></div>
         {{/if}}
       </div>
+
       <div class="kongfu">
         {{if planInfo.kongfu.sub}}
         <div class="label">
-          <img class="wuxue" src="{{planInfo.kongfu.sub.image}}" />
+          <img class="wuxue" src="{{plugin.resources.download}}/{{planInfo.kongfu.sub.image}}" />
           <div class="name">
-            {{if planInfo.kongfu.sub.liupai_icon}}
-            <img class="liupai" src="{{planInfo.kongfu.sub.liupai_icon}}" />
+            {{if planInfo.kongfu.sub.liupai}}
+            <img class="liupai" src="{{plugin.resources.download}}/{{planInfo.kongfu.sub.liupai_icon}}" />
             {{/if}}
             {{planInfo.kongfu.sub.name}}
             <span class="level"><br>Lv.{{planInfo.kongfu.sub.level}}</span>
           </div>
         </div>
         <div class="weapon">
-          <img src="{{planInfo.kongfu.sub.equip.long_icon}}" />
+          <img src="{{plugin.resources.download}}/{{planInfo.kongfu.sub.equip.long_icon}}" />
           <span class="name">{{planInfo.kongfu.sub.equip.name}}</span>
         </div>
         {{else}}
@@ -120,9 +121,9 @@
       <span class="title">心法</span>
 
       {{each planInfo.xinfa xinfa}}
-      <div class="xinfa" style="background-image: url('{{xinfa.bg_icon}}');">
-        <img class="xinfa-image" src="{{xinfa.image}}">
-        <img class="liupai-image" src="{{xinfa.liupai_icon}}">
+      <div class="xinfa" style="background-image: url('{{plugin.resources.download}}/{{xinfa.bg_icon}}');">
+        <img class="xinfa-image" src="{{plugin.resources.download}}/{{xinfa.image}}">
+        <img class="liupai-image" src="{{plugin.resources.download}}/{{xinfa.liupai_icon}}">
         <span class="rank rank-{{xinfa.rank}}"></span>
         <span class="name">{{xinfa.name}}</span>
       </div>
@@ -134,7 +135,7 @@
 
       {{each planInfo.qishu qishu}}
       <div class="qishu at-{{qishu.idx}}">
-        <img class="qishu-image" src="{{qishu.image}}">
+        <img class="qishu-image" src="{{plugin.resources.download}}/{{qishu.image}}">
         <span class="level level-{{qishu.level}}"></span>
         <span class="name at-{{qishu.idx}}">{{qishu.name}}</span>
       </div>

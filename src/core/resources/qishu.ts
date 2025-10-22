@@ -22,7 +22,7 @@ export const Qishu = new class {
       this.#map.set(item.id, {
         id: item.id,
         name: item.name!,
-        image: `${dir.ResourcesDir}/images/qishu/${item.id}.png`
+        image: `images/qishu/${item.id}.png`
       })
     })
 
