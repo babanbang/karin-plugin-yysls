@@ -4,7 +4,7 @@
 
 .container {
   background-color: rgb(139, 141, 156);
-  background-image: url('../../image/icon/bg.webp'), url('../../image/icon/kv.webp');
+  background-image: url('../../images/icon/bg.webp'), url('../../images/icon/kv.webp');
   background-repeat: no-repeat;
   background-position: center, top center;
   background-size: contain, contain;
@@ -22,7 +22,7 @@
     right: 30px;
     width: 160px;
     height: 80px;
-    background-image: url('../../image/icon/logo.png');
+    background-image: url('../../images/icon/logo.png');
     background-repeat: no-repeat;
     background-position: center;
     background-size: contain;
@@ -75,7 +75,7 @@
           align-items: center;
           justify-content: center;
           object-fit: cover;
-          background-image: url('../../image/icon/avatar-bg.png');
+          background-image: url('../../images/icon/avatar-bg.png');
           background-repeat: no-repeat;
           background-size: cover;
 
@@ -198,7 +198,7 @@
           position: absolute;
           width: 100%;
           height: 100%;
-          background-image: url('../../image/icon/item-has.webp');
+          background-image: url('../../images/icon/item-has.webp');
           background-repeat: no-repeat;
           background-position: center;
           background-size: contain;
@@ -211,7 +211,7 @@
 
     @for $i from 1 through 3 {
       .reward-box.color-#{$i} {
-        background-image: url('../../image/icon/color-#{$i}.webp');
+        background-image: url('../../images/icon/color-#{$i}.webp');
       }
     }
   }

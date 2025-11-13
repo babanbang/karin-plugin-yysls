@@ -1,28 +1,28 @@
 import { dir } from '@/dir'
-import { ImageMapType, XinfaItem } from '@/types'
+import { XinfaImageType, XinfaItem } from '@/types'
 import { existsSync, logger, readJsonSync, watch } from 'node-karin'
 import path from 'node:path'
 
 const bgMap = new Map([
-  ['1', { bg: 1, liupai: '通' }], ['2', { bg: 1, liupai: '通' }], ['3', { bg: 1, liupai: '通' }], ['4', { bg: 1, liupai: '通' }],
-  ['5', { bg: 1, liupai: '通' }], ['6', { bg: 1, liupai: '通' }], ['41', { bg: 2, liupai: '通' }], ['42', { bg: 2, liupai: '通' }],
-  ['43', { bg: 2, liupai: '通' }], ['44', { bg: 2, liupai: '通' }], ['45', { bg: 2, liupai: '通' }], ['46', { bg: 2, liupai: '通' }],
-  ['47', { bg: 2, liupai: '通' }], ['48', { bg: 2, liupai: '通' }], ['81', { bg: 3, liupai: '通' }], ['82', { bg: 3, liupai: '通' }],
-  ['101', { bg: 2, liupai: '虹' }], ['102', { bg: 2, liupai: '虹' }], ['103', { bg: 2, liupai: '虹' }], ['104', { bg: 3, liupai: '虹' }],
-  ['151', { bg: 2, liupai: '影' }], ['152', { bg: 2, liupai: '影' }], ['153', { bg: 2, liupai: '影' }], ['154', { bg: 3, liupai: '影' }],
-  ['301', { bg: 2, liupai: '玉' }], ['302', { bg: 2, liupai: '玉' }], ['303', { bg: 2, liupai: '玉' }], ['304', { bg: 3, liupai: '玉' }],
-  ['351', { bg: 3, liupai: '霖' }], ['352', { bg: 2, liupai: '霖' }], ['353', { bg: 2, liupai: '霖' }], ['354', { bg: 2, liupai: '霖' }],
-  ['401', { bg: 3, liupai: '威' }], ['402', { bg: 2, liupai: '威' }], ['403', { bg: 2, liupai: '威' }], ['404', { bg: 2, liupai: '威' }],
-  ['451', { bg: 3, liupai: '风' }], ['452', { bg: 2, liupai: '风' }], ['453', { bg: 2, liupai: '风' }], ['454', { bg: 2, liupai: '风' }],
-  ['501', { bg: 3, liupai: '尘' }], ['502', { bg: 2, liupai: '尘' }], ['503', { bg: 2, liupai: '尘' }], ['504', { bg: 2, liupai: '尘' }],
-  ['551', { bg: 3, liupai: '钧' }], ['552', { bg: 2, liupai: '钧' }], ['553', { bg: 2, liupai: '钧' }], ['554', { bg: 2, liupai: '钧' }]
+  [1, { bg: 1, liupai: '通' }], [2, { bg: 1, liupai: '通' }], [3, { bg: 1, liupai: '通' }], [4, { bg: 1, liupai: '通' }],
+  [5, { bg: 1, liupai: '通' }], [6, { bg: 1, liupai: '通' }], [41, { bg: 2, liupai: '通' }], [42, { bg: 2, liupai: '通' }],
+  [43, { bg: 2, liupai: '通' }], [44, { bg: 2, liupai: '通' }], [45, { bg: 2, liupai: '通' }], [46, { bg: 2, liupai: '通' }],
+  [47, { bg: 2, liupai: '通' }], [48, { bg: 2, liupai: '通' }], [81, { bg: 3, liupai: '通' }], [82, { bg: 3, liupai: '通' }],
+  [101, { bg: 2, liupai: '虹' }], [102, { bg: 2, liupai: '虹' }], [103, { bg: 2, liupai: '虹' }], [104, { bg: 3, liupai: '虹' }],
+  [151, { bg: 2, liupai: '影' }], [152, { bg: 2, liupai: '影' }], [153, { bg: 2, liupai: '影' }], [154, { bg: 3, liupai: '影' }],
+  [301, { bg: 2, liupai: '玉' }], [302, { bg: 2, liupai: '玉' }], [303, { bg: 2, liupai: '玉' }], [304, { bg: 3, liupai: '玉' }],
+  [351, { bg: 3, liupai: '霖' }], [352, { bg: 2, liupai: '霖' }], [353, { bg: 2, liupai: '霖' }], [354, { bg: 2, liupai: '霖' }],
+  [401, { bg: 3, liupai: '威' }], [402, { bg: 2, liupai: '威' }], [403, { bg: 2, liupai: '威' }], [404, { bg: 2, liupai: '威' }],
+  [451, { bg: 3, liupai: '风' }], [452, { bg: 2, liupai: '风' }], [453, { bg: 2, liupai: '风' }], [454, { bg: 2, liupai: '风' }],
+  [501, { bg: 3, liupai: '尘' }], [502, { bg: 2, liupai: '尘' }], [503, { bg: 2, liupai: '尘' }], [504, { bg: 2, liupai: '尘' }],
+  [551, { bg: 3, liupai: '钧' }], [552, { bg: 2, liupai: '钧' }], [553, { bg: 2, liupai: '钧' }], [554, { bg: 2, liupai: '钧' }]
 ])
 
 let First = true
 
 export const Xinfa = new class {
   listPath = path.join(dir.ResourcesDir, 'images', 'xinfa', 'list.json')
-  #map = new Map<string, XinfaItem>()
+  #map = new Map<number, XinfaItem>()
 
   load () {
     if (!existsSync(this.listPath)) {
@@ -31,21 +31,23 @@ export const Xinfa = new class {
       First = false
     }
 
-    const xinfaData: ImageMapType[] = readJsonSync(this.listPath) || []
+    const xinfaData: XinfaImageType[] = readJsonSync(this.listPath) || []
     this.#map.clear()
 
     xinfaData.forEach(item => {
-      const bg = bgMap.get(item.id)
-      if (!bg) {
+      const id = Number(item.id)
+
+      if (!bgMap.has(id)) {
         logger.error(`心法(bgMap:${item.id})需要更新，请提交issue`)
       }
 
-      this.#map.set(item.id, {
-        id: item.id,
+      const bg = bgMap.get(id)
+      this.#map.set(id, {
+        id,
         name: item.name!,
-        image: `/images/xinfa/${item.id}.png`,
-        bg_icon: `/image/xinfa/${bg?.bg}_bg.png`,
-        liupai_icon: `/image/liupai/${bg?.liupai}_big.png`
+        image: `images/xinfa/${id}.png`,
+        bg_icon: `images/xinfa/${bg?.bg}_bg.png`,
+        liupai_icon: `images/liupai/${bg?.liupai}_big.png`
       })
     })
 
@@ -58,10 +60,9 @@ export const Xinfa = new class {
     }
   }
 
-  get (_id: string, rank: number): XinfaItem & { rank: number } {
+  get (_id: number, rank: number): XinfaItem & { rank: number } {
     First && this.load()
-
-    const id = String(_id)
+    const id = Number(_id)
 
     const xinfa = this.#map.get(id)
     if (!xinfa) {

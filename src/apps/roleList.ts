@@ -56,8 +56,7 @@ export const showRoleList = async (e: Message) => {
 }
 
 export const ShowRoleList = karin.command(
-  showRoleListCmd,
-  async (e, next) => {
+  showRoleListCmd, async (e, next) => {
     if (!CommandCfg.get<boolean>(`${CommandEnum.ShowRoleList}.enable`)) {
       next()
 

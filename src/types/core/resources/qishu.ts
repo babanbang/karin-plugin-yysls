@@ -1,5 +1,5 @@
 export interface QishuItem {
-  id: string
+  id: number
   name: string
   image: string
 }

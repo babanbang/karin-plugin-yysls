@@ -37,9 +37,7 @@ export class DefineApi<
 
         const result = await this.#requestData(this.#apiInfo, data)
 
-        if (seconds > 0) {
-          await redis.setEx(key, seconds, JSON.stringify(result))
-        }
+        seconds > 0 && await redis.setEx(redisKey, seconds, JSON.stringify(result))
 
         return result
       }
@@ -75,11 +73,11 @@ export class DefineApi<
       return null as any
     }
 
-    const res = Result ? await Result(response) : response.data
+    const res = Result ? await Result(response) : { data: response.data, row: response.data }
 
-    logger.debug(`[${dir.name}] requst-success(${logger.green(`${Date.now() - start}ms`)}): ${JSON.stringify(params, null, 2)} -> ${JSON.stringify(res, null, 2)}`)
+    logger.debug(`[${dir.name}] requst-success(${logger.green(`${Date.now() - start}ms`)}): ${JSON.stringify(params, null, 2)} -> ${JSON.stringify(res.row, null, 2)}`)
 
-    return res
+    return res.data
   }
 
   Headers = () => ({

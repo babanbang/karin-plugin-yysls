@@ -11,22 +11,23 @@ export interface ConfigIgnoreArray<T> {
   defaultConfig: T[]
   defaultConfigItem: {
     defaultConfig: T
+    required?: T extends Record<string, any> ? (keyof T)[] : never
   }
 }
 
 export class Config<C extends Record<string, any>> {
   /**
-    * @description 配置缓存
-    */
+   * @description 配置缓存
+   */
   #ConfigCache: C | null = null
   /**
-    * @description 默认配置
-    */
+   * @description 默认配置
+   */
   #DefaultConfig: C
   #IgnoreConfig: Record<string, any>
   /**
-    * @description 配置保存路径
-    */
+   * @description 配置保存路径
+   */
   #ConfigPath: string
 
   constructor (ConfigPath: string, DefaultConfig: C, IgnoreConfig: Record<string, any>) {
@@ -57,8 +58,16 @@ export class Config<C extends Record<string, any>> {
       if (Array.isArray(user) && Array.isArray(defaults)) {
         if (Ignore?.defaultConfigItem) {
           const filtered: any[] = []
+          const required = Ignore.defaultConfigItem.required as string[] | undefined
 
           user.forEach((value, key) => {
+            // 如果定义了 required，检查元素是否包含所有必需的键
+            if (required && lodash.isPlainObject(value)) {
+              const hasAllRequired = required.every(requiredKey => requiredKey in value && value[requiredKey] !== undefined && value[requiredKey] !== null && value[requiredKey] !== '')
+
+              if (!hasAllRequired) return
+            }
+
             filtered[key] = filterUserConfig(value, Ignore.defaultConfigItem.defaultConfig, Ignore.defaultConfigItem.defaultConfig)
           })
 
@@ -108,8 +117,8 @@ export class Config<C extends Record<string, any>> {
   }
 
   /**
-* @description 获取配置路径对应的默认配置
-*/
+   * @description 获取配置路径对应的默认配置
+   */
   getDef<T> (path: string) {
     const defConfig = JSON.parse(JSON.stringify(this.#DefaultConfig))
 
@@ -117,8 +126,8 @@ export class Config<C extends Record<string, any>> {
   }
 
   /**
- * @description 获取配置路径对应的配置
- */
+   * @description 获取配置路径对应的配置
+   */
   get<T> (path: string, isArray?: false, def?: T): T
   get<T> (path: string, isArray: true, def?: T[]): EnhancedArray<T>
   get<T> (path: string, isArray: boolean = false, def?: T): T | EnhancedArray<T> {

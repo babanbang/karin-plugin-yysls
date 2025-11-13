@@ -1,10 +1,14 @@
 @use 'sass:list';
 
+:root {
+  --width: 1150px
+}
+
 .container {
   background-repeat: no-repeat;
   background-position: left, top left, top right;
-  background-size: 600px auto, 600px auto, 600px auto;
-  background-position-y: 100px, 0px, -10px;
+  background-size: 600px auto, 600px auto, 550px auto;
+  background-position-y: 100px, 0px, -30px;
   position: relative;
   flex-direction: unset;
   flex-wrap: wrap;
@@ -15,7 +19,7 @@
     left: 430px;
     width: 160px;
     height: 80px;
-    background-image: url('../../image/icon/logo.png');
+    background-image: url('../../images/icon/logo.png');
     background-repeat: no-repeat;
     background-position: center;
     background-size: contain;
@@ -27,10 +31,24 @@
     padding: 15px;
     margin-top: 10px;
     width: 600px;
+    position: relative;
+
+    .color-bg {
+      $top: 230px;
+      position: absolute;
+      top: $top;
+      left: 0;
+      width: 100%;
+      height: calc(100% - $top + 5px);
+      background-color: #cfcfdd;
+      z-index: 0;
+    }
 
     .head-info {
       display: flex;
       margin-bottom: 10px;
+      position: relative;
+      z-index: 1;
 
       .avatar {
         width: 80px;
@@ -39,7 +57,7 @@
         align-items: center;
         justify-content: center;
         object-fit: cover;
-        background-image: url('../../image/icon/avatar-bg.png');
+        background-image: url('../../images/icon/avatar-bg.png');
         background-repeat: no-repeat;
         background-size: cover;
         position: relative;
@@ -56,7 +74,7 @@
           font-size: 10px;
           padding: 1px;
           border-radius: 3px;
-          bottom: 0;
+          bottom: 7px;
           right: 0;
         }
       }
@@ -92,14 +110,71 @@
             border-radius: 5px;
           }
         }
+
+        .status-info {
+          position: absolute;
+          bottom: 5px;
+          right: 5px;
+          display: flex;
+          justify-content: center;
+          font-size: 14px;
+          gap: 5px;
+          text-shadow: none;
+
+          .status {
+            color: #ffffff;
+            position: relative;
+
+            max {
+              margin-left: -4px;
+              font-size: 10px;
+              color: #000000;
+            }
+
+            @each $key in 'xinli', 'tili', 'bugan' {
+              &.#{$key} {
+                padding: 1px 2px 1px 15px;
+                border-radius: 5px;
+
+                &::before {
+                  content: '';
+                  width: 12px;
+                  height: 12px;
+                  position: absolute;
+                  left: 2px;
+                  top: 3px;
+                  background-image: url('../../images/icon/icon_#{$key}.webp');
+                  background-repeat: no-repeat;
+                  background-size: contain;
+                  z-index: 5;
+                }
+
+              }
+            }
+
+            &.xinli {
+              background-color: #b2844b;
+            }
+
+            &.tili {
+              background-color: #69717c;
+            }
+
+            &.bugan {
+              background-color: #45725a;
+            }
+          }
+        }
       }
     }
 
     .tips-info {
       width: 100%;
-      background-image: url('../../image/icon/head-info-bg.png');
+      background-image: url('../../images/icon/head-info-bg.png');
       background-repeat: no-repeat;
       background-size: cover;
+      position: relative;
+      z-index: 1;
 
       .base,
       .explore {
@@ -123,7 +198,7 @@
             font-size: 12px;
             color: #8f752e;
             width: 80%;
-            background-image: url('../../image/icon/head-info-label-bg.png');
+            background-image: url('../../images/icon/head-info-label-bg.png');
             background-repeat: no-repeat;
             background-size: cover;
           }
@@ -148,6 +223,7 @@
       flex-wrap: wrap;
       justify-content: center;
       position: relative;
+      z-index: 1;
 
       .title {
         position: absolute;
@@ -157,7 +233,7 @@
 
         .tip {
           padding-left: 15px;
-          background-image: url('../../image/icon/icon_beizhan.webp');
+          background-image: url('../../images/icon/icon_beizhan.webp');
           background-repeat: no-repeat;
           background-size: contain;
         }
@@ -165,7 +241,7 @@
         .zaoyi-now {
           margin-left: 3px;
           padding-left: 18px;
-          background-image: url('../../image/icon/icon_goose.webp');
+          background-image: url('../../images/icon/icon_goose.webp');
           background-repeat: no-repeat;
           background-size: contain;
 
@@ -185,7 +261,7 @@
 
         .kongfu {
           width: calc((100% - 10px) / 2);
-          background-image: url('../../image/icon/bg_kongfu.png');
+          background-image: url('../../images/icon/bg_kongfu.png');
           background-repeat: no-repeat;
           background-size: contain;
           display: flex;
@@ -229,7 +305,7 @@
             width: 60px;
             height: 60px;
             position: relative;
-            background-image: url('../../image/icon/bg_kongfu_item.webp');
+            background-image: url('../../images/icon/bg_kongfu_item.webp');
             background-repeat: no-repeat;
             background-size: contain;
 
@@ -260,7 +336,7 @@
         margin-top: 10px;
         width: 100%;
         padding: 40px 10px 10px 0;
-        background-image: url('../../image/icon/xinfa_bg.png');
+        background-image: url('../../images/icon/xinfa_bg.png');
         background-repeat: no-repeat;
         background-size: cover;
         display: flex;
@@ -307,12 +383,12 @@
               $shadows: list.slash(0 0 0 0, 0 0 0 0);
 
               @for $j from 1 through 4 {
-                $color: if($j < $i, if($i <=(5 + $j), #ffffff, #ffff00), #999999);
+                $color: if($j < $i, if($i <=(5 + $j), #ffffff, #ff9300), #999999);
                 $shadows: list.append($shadows, ($j * 10px) 0 0 $color, comma);
               }
 
               &.rank-#{$i} {
-                background-color: if($i >0, if($i <=5, #ffffff, #ffff00), #999999);
+                background-color: if($i >0, if($i <=5, #ffffff, #ff9300), #999999);
                 box-shadow: $shadows;
               }
             }
@@ -327,7 +403,7 @@
         height: 180px;
         display: flex;
         color: #fff;
-        background-image: url('../../image/icon/qishu_bg.png');
+        background-image: url('../../images/icon/qishu_bg.png');
         background-repeat: no-repeat;
         background-size: contain;
         position: relative;
@@ -350,7 +426,7 @@
           right: $right1;
           width: 100px;
           height: 100px;
-          background-image: url('../../image/icon/qishu_list_bg.png');
+          background-image: url('../../images/icon/qishu_list_bg.png');
           background-repeat: no-repeat;
           background-size: contain;
           z-index: 4;
@@ -363,7 +439,7 @@
           right: $right1+$margin-right1;
           width: 100px;
           height: 100px;
-          background-image: url('../../image/icon/qishu_list_bg.png');
+          background-image: url('../../images/icon/qishu_list_bg.png');
           background-repeat: no-repeat;
           background-size: contain;
           z-index: 4;
@@ -430,12 +506,12 @@
               $shadows: list.slash(0 0 0 0, 0 0 0 0);
 
               @for $j from 1 through 4 {
-                $color: if($j < $i, if($i <=(5 + $j), #ffffff, #ffff00), #999999);
+                $color: if($j < $i, if($i <=(5 + $j), #ffffff, #ff9300), #999999);
                 $shadows: list.append($shadows, ($j * 6px) 0 0 $color, comma);
               }
 
               &.level-#{$i} {
-                background-color: if($i >0, if($i <=5, #ffffff, #ffff00), #999999);
+                background-color: if($i >0, if($i <=5, #ffffff, #ff9300), #999999);
                 box-shadow: $shadows;
               }
             }
@@ -460,6 +536,231 @@
   }
 
   .game-equipInfo {
-    width: 600px;
+    width: 550px;
+    padding: 11px;
+    position: relative;
+
+    .color-bg {
+      $top: 120px;
+      position: absolute;
+      top: $top;
+      left: 0;
+      width: 100%;
+      height: calc(100% - $top + 5px);
+      background-color: #cfcfdd;
+      z-index: 0;
+    }
+
+    .equip-info {
+      width: 100%;
+      margin-top: 70px;
+      padding-top: 35px;
+      position: relative;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+
+      .title {
+        position: absolute;
+        font-size: 22px;
+        font-weight: bold;
+        color: #000000;
+        top: 0;
+        left: 0;
+      }
+
+      .equip {
+        padding: 5px;
+        background-color: #373737;
+        box-shadow: 0 0 5px #999999;
+        border-radius: 10px 0px 10px 10px;
+        position: relative;
+        width: 255px;
+        height: 300px;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+
+        @for $idx from 2 through 5 {
+          &.quality-#{$idx}::after {
+            content: '';
+            position: absolute;
+            top: -48px;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('../../images/equip/quality_#{$idx}.png');
+            background-repeat: no-repeat;
+            background-size: contain;
+            opacity: 0.7;
+          }
+        }
+
+        .icon {
+          width: 180px;
+          height: 180px;
+          position: absolute;
+          bottom: 0;
+          right: 0;
+          opacity: 0.5;
+          z-index: 1;
+        }
+
+        .info {
+          height: 80px;
+          position: relative;
+
+          .name {
+            display: block;
+            height: 28px;
+            font-size: 22px;
+            font-weight: bold;
+          }
+
+          .suffix {
+            font-size: 55px;
+            font-weight: bold;
+            position: absolute;
+            top: 12px;
+            right: 40px;
+            color: rgba(255, 255, 255, 0.35);
+          }
+
+          .durability {
+            position: absolute;
+            color: #000000;
+            font-size: 10px;
+            padding: 1px;
+            border-radius: 0 0 0 3px;
+            background-color: #87ceeb;
+            top: -7px;
+            right: -5px;
+          }
+
+          .main-attr {
+            margin-top: 5px;
+            padding: 0 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+
+            .attr {
+              display: flex;
+              margin-top: auto;
+
+              .value {
+                margin-left: auto;
+              }
+            }
+          }
+
+        }
+
+        .tiaolv-info {
+          margin-top: 5px;
+          padding: 3px;
+          display: flex;
+          height: 215px;
+          flex-direction: column;
+          z-index: 3;
+
+          .tiaolv {
+            height: 35px;
+            display: flex;
+            flex-direction: column;
+
+            .label {
+              display: flex;
+              align-items: center;
+
+              &.绿 {
+                color: #90b5a2;
+              }
+
+              &.蓝 {
+                color: #8bb2c7;
+              }
+
+              &.紫 {
+                color: #a998c5;
+              }
+
+              &.金 {
+                color: #d5c7a1;
+              }
+
+              .value {
+                margin-left: auto;
+                color: #ffffff;
+              }
+
+              .recommend {
+                font-size: 12px;
+                margin-left: 5px;
+                padding: 1px;
+                border-radius: 2px;
+                background-color: #525050;
+              }
+            }
+
+
+            .percent {
+              height: 4px;
+              width: 100%;
+              font-size: 10px;
+              background-color: #ffffff;
+              border-radius: 3px;
+              position: relative;
+              overflow: visible;
+              text-align: right;
+              padding-top: 6px;
+              line-height: 1;
+
+              &.绿 {
+                color: #90b5a2;
+              }
+
+              &.蓝 {
+                color: #8bb2c7;
+              }
+
+              &.紫 {
+                color: #a998c5;
+              }
+
+              &.金 {
+                color: #d5c7a1;
+              }
+
+              &::after {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                height: 100%;
+                border-radius: 3px;
+                width: var(--percent, 0%);
+              }
+
+              &.绿::after {
+                background-color: #90b5a2;
+              }
+
+              &.蓝::after {
+                background-color: #8bb2c7;
+              }
+
+              &.紫::after {
+                background-color: #a998c5;
+              }
+
+              &.金::after {
+                background-color: #d5c7a1;
+              }
+            }
+          }
+        }
+      }
+    }
   }
 }

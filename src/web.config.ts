@@ -151,17 +151,6 @@ export default defineConfig({
             }),
           ]
         }),
-        components.accordion.createItem(`accordion-${CommandEnum.showGameInfo}-item-key`, {
-          title: '角色信息查询设置',
-          subtitle: '具体效果请使用对应指令查看',
-          className: 'flex flex-wrap items-center gap-4',
-          children: [
-            components.switch.create(`${CommandEnum.showGameInfo}-pagination`, {
-              defaultSelected: Cfg.get<boolean>(`${CommandEnum.showGameInfo}.pagination`),
-              label: '分页显示'
-            })
-          ]
-        })
       ],
     }),
 

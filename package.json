@@ -23,19 +23,19 @@
     "karin": "^1.12.0"
   },
   "dependencies": {
+    "cron-parser": "^5.4.0",
     "md5": "^2.3.0",
-    "sequelize": "^6.37.7",
-    "cron-parser": "^5.4.0"
+    "sequelize": "^6.37.7"
   },
   "devDependencies": {
-    "@karinjs/plugin-puppeteer": "^1.0.18",
+    "@karinjs/plugin-puppeteer": "^1.0.21",
     "@types/express": "^5.0.1",
     "@types/lodash": "^4.17.16",
     "@types/node": "^20.17.8",
     "cross-env": "^7.0.3",
     "eslint": "^9.7.0",
     "neostandard": "^0.11.9",
-    "node-karin": "^1.12.0",
+    "node-karin": "^1.12.2",
     "tsup": "^8.5.0",
     "tsx": "^4.19.2",
     "typescript": "^5.5.3"

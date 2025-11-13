@@ -1,6 +1,6 @@
 .container {
   background-color: rgb(139, 141, 156);
-  background-image: url('../../image/icon/bg.webp'), url('../../image/icon/kv.webp');
+  background-image: url('../../images/icon/bg.webp'), url('../../images/icon/kv.webp');
   background-repeat: no-repeat;
   background-position: center, top center;
   background-size: 100% auto, 100% auto;
@@ -18,7 +18,7 @@
     right: 30px;
     width: 160px;
     height: 80px;
-    background-image: url('../../image/icon/logo.png');
+    background-image: url('../../images/icon/logo.png');
     background-repeat: no-repeat;
     background-position: center;
     background-size: contain;
@@ -93,7 +93,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        background-image: url('../../image/icon/avatar-bg.png');
+        background-image: url('../../images/icon/avatar-bg.png');
         background-repeat: no-repeat;
         background-size: cover;
 
@@ -179,7 +179,7 @@
           display: flex;
           justify-content: center;
           padding-top: 4px;
-          background-image: url('../../image/icon/calendar.png');
+          background-image: url('../../images/icon/calendar.png');
           background-size: cover;
         }
 

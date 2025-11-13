@@ -1,12 +1,12 @@
 import { dir } from '@/dir'
-import { ImageMapType, QishuItem } from '@/types/core/resources'
+import { QishuImageType, QishuItem } from '@/types/core/resources'
 import { existsSync, logger, readJsonSync, watch } from 'node-karin'
 import path from 'node:path'
 
 let First = true
 export const Qishu = new class {
   listPath = path.join(dir.ResourcesDir, 'images', 'qishu', 'list.json')
-  #map = new Map<string, QishuItem>()
+  #map = new Map<number, QishuItem>()
 
   load () {
     if (!existsSync(this.listPath)) {
@@ -15,14 +15,16 @@ export const Qishu = new class {
       First = false
     }
 
-    const equipData: ImageMapType[] = readJsonSync(this.listPath) || []
+    const equipData: QishuImageType[] = readJsonSync(this.listPath) || []
     this.#map.clear()
 
     equipData.forEach(item => {
-      this.#map.set(item.id, {
-        id: item.id,
+      const id = Number(item.id)
+
+      this.#map.set(id, {
+        id,
         name: item.name!,
-        image: `images/qishu/${item.id}.png`
+        image: `images/qishu/${id}.png`
       })
     })
 
@@ -35,10 +37,9 @@ export const Qishu = new class {
     }
   }
 
-  get (_id: string, level: number): QishuItem & { level: number } {
+  get (_id: number, level: number): QishuItem & { level: number } {
     First && this.load()
-
-    const id = String(_id)
+    const id = Number(_id)
 
     const qishu = this.#map.get(id)
     if (!qishu) {

@@ -1,5 +1,5 @@
 export interface WuxueItem {
-  id: string
+  id: number
   name: string
   image: string
   liupai?: string

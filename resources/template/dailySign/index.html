@@ -36,7 +36,7 @@
     <div class="rewards">
       {{each sign.signInfo.rewards reward}}
       <div class="item">
-        <img class="icon" src="{{plugin.resources.default}}/image/reward/{{reward.name}}.png" />
+        <img class="icon" src="{{plugin.resources.default}}/images/reward/{{reward.name}}.png" />
         {{reward.name}} *{{reward.num}}
       </div>
       {{/each}}
@@ -55,7 +55,7 @@
   {{each cumulativeFigList cumulativeFig}}
   <div
     class="reward-box color-{{cumulativeFig.reward.color}}{{if cumulativeFig.AttainList && cumulativeFig.AttainList.length}} isSign{{/if}}">
-    <img class="icon" src="{{plugin.resources.default}}/image/reward/{{cumulativeFig.reward.name}}.png" />
+    <img class="icon" src="{{plugin.resources.default}}/images/reward/{{cumulativeFig.reward.name}}.png" />
 
     <div class="sign-avatar">
       {{each cumulativeFig.AttainList user}}

@@ -1,53 +1,47 @@
 export interface ImageMapType {
   id: string
-  image: string
-  icon: string
+  name?: string
 
   bg?: string
-  name?: string
+  icon?: string
+  image?: string
 }
 
-export interface BaseImage {
+export interface BaseImageType {
   id: number
   pic_url: string
 }
 
-export interface QishuImage extends BaseImage {
+export interface QishuImageType extends BaseImageType {
   name: string
 }
 
-export interface EquipImage {
-  id: number
-  name: string
-  icon_url: string
-  long_icon_url: string
-}
-
-export interface MenpaiImage {
+export interface MenpaiImageType {
   id: number
   name: string
   menpai_pic_url: string
   menpai_name_pic_url: string
 }
 
-export interface CardbgImage extends BaseImage {
+export interface CardbgImageType extends BaseImageType {
   name: string
 }
 
-export interface WuxueImage extends BaseImage {
+export interface WuxueImageType extends BaseImageType {
   name: string
   liupai_pic_url: string
 }
 
-export interface XinfaImage {
+export interface XinfaImageType {
   id: number
   name: string
   icon_url: string
   bg_icon_url: string
+  liupai_pic_url: string
   liupai_pic_big_url: string
 }
 
-export interface FashionLevelImage {
+export interface FashionLevelImageType {
   id: number
   name: string
   icon_url: string

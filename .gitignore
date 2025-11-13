@@ -136,4 +136,4 @@ build
 @karinjs
 
 # build output
-lib
+lib/

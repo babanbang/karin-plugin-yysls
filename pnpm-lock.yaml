@@ -19,8 +19,8 @@ importers:
         version: 6.37.7
     devDependencies:
       '@karinjs/plugin-puppeteer':
-        specifier: ^1.0.18
-        version: 1.0.18
+        specifier: ^1.0.21
+        version: 1.0.21
       '@types/express':
         specifier: ^5.0.1
         version: 5.0.3
@@ -40,8 +40,8 @@ importers:
         specifier: ^0.11.9
         version: 0.11.9(eslint@9.36.0)(typescript@5.9.3)
       node-karin:
-        specifier: ^1.12.0
-        version: 1.12.0
+        specifier: ^1.12.2
+        version: 1.12.2
       tsup:
         specifier: ^8.5.0
         version: 8.5.0(tsx@4.20.6)(typescript@5.9.3)(yaml@2.7.0)
@@ -310,8 +310,8 @@ packages:
   '@karinjs/node-schedule@1.0.0':
     resolution: {integrity: sha512-dHhYKcprM/5DQhVX/CFZGsJcNhbfUuE14zFuNunvzU5WdX+mqnpPpOAOaHdKMOLJunaq6zMdBHDYNw/NgEBQyg==}
 
-  '@karinjs/plugin-puppeteer@1.0.18':
-    resolution: {integrity: sha512-0zhe1LWA0WUXTHvlJquP7uiXrwWPkgoZ2kodRcqQBkq+42ox+t9Kecg5SLxgerGfBidLcg7T63k7gN3FTws5tQ==}
+  '@karinjs/plugin-puppeteer@1.0.21':
+    resolution: {integrity: sha512-WyzIzZ0fgbUgU9xT36UzTBDHplq16WXRyqCMNd8CZbTNCuzbrx1WMg8q1AmSCn5rNovMCS56IucexenXm3DmyA==}
 
   '@karinjs/puppeteer@2.2.4':
     resolution: {integrity: sha512-u8ubMmxnmkco8PXr/vS5jkb61W+4/vSkaBRrlkdUqlPk6rh17TPdsIfoxuMI+bT94gG8c82KFzrI9I+2i4jkKg==}
@@ -1340,8 +1340,8 @@ packages:
     peerDependencies:
       eslint: ^9.0.0
 
-  node-karin@1.12.0:
-    resolution: {integrity: sha512-WXfVuPvCwcd428G1842vK2RL7cWEmEHsQ70ODHVYTNcex2uUVMU8XMr9lV9Ot+3LLX8pP5PYhfbgNnU/Iwd2qA==}
+  node-karin@1.12.2:
+    resolution: {integrity: sha512-Z9bDVL8VvZQMmsIX2HEW0l4J9B7VKPPPyQFI0NRx/mwN0k6bdhdZOZJc1xpnsiXNMqqgM8ikcJhv20rE4CJAgQ==}
     engines: {node: '>=18'}
     hasBin: true
 
@@ -2040,7 +2040,7 @@ snapshots:
 
   '@karinjs/node-schedule@1.0.0': {}
 
-  '@karinjs/plugin-puppeteer@1.0.18':
+  '@karinjs/plugin-puppeteer@1.0.21':
     dependencies:
       '@karinjs/puppeteer': 2.2.4
 
@@ -3244,7 +3244,7 @@ snapshots:
       - supports-color
       - typescript
 
-  node-karin@1.12.0:
+  node-karin@1.12.2:
     dependencies:
       art-template: '@karinjs/art-template@1.1.0'
       axios: '@karinjs/axios@1.2.0'

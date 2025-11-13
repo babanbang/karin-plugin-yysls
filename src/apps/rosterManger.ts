@@ -18,6 +18,7 @@ export const setRoster = karin.command(
           await e.reply('请在群内使用此命令，或指定GroupId！', { at: true })
           return true
         }
+
         setId.push(e.groupId)
       } else if (scope === 'uid') {
         await e.reply(`请指定要${setType}的uid！`, { at: true })

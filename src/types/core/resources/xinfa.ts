@@ -1,5 +1,5 @@
 export interface XinfaItem {
-  id: string
+  id: number
   name: string
   image: string
   bg_icon: string

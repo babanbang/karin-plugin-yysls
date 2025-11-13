@@ -8,8 +8,7 @@ import { showRoleList } from './roleList'
 
 const LoginCmd = Command.getCommand(CommandEnum.Login, '')
 export const login = karin.command(
-  LoginCmd,
-  async (e, next) => {
+  LoginCmd, async (e, next) => {
     if (!CommandCfg.get<boolean>(`${CommandEnum.Login}.enable`)) next()
 
     let token = e.msg.replace(LoginCmd, '').trim()

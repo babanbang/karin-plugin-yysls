@@ -1,4 +1,4 @@
-import { EquipItem, QishuItem, WuxueItem } from '../resources'
+import { EquipItem, EquipPropItem, EquipSuitType, EquipTiaolvItem, QishuItem, WuxueItem } from '../resources'
 
 export interface BaseApiReponse {
   status: boolean
@@ -6,6 +6,18 @@ export interface BaseApiReponse {
   code: number
   msg: string
 }
+
+export type wearEquipsDetailedRow = Record<string, {
+  no: string
+  exVo: {
+    suffix: number
+    durability: number
+    baseAttrs: Record<string, number>
+    baseAffixes: {
+      equipmentDetails: EquipTiaolvInfoType
+    }[]
+  }
+}>
 
 export interface GameInfoResponse extends BaseApiReponse {
   data: {
@@ -47,10 +59,22 @@ export interface GameInfoResponse extends BaseApiReponse {
     /** @description 装配奇术 */
     battleQs: (QishuItem & { level: number; idx: string })[]
     /** @description 装备详情 */
-    wearEquipsDetailed: Record<string, EquipDetailItem>
+    wearEquipsDetailed: EquipDetailItem[]
     /** @description 心法详情 */
-    passiveSlots: string[]
+    passiveSlots: number[]
     xinfaInfo: Record<string, { rank: number }>
+    merge1Vo: {
+      /** @description 体力上限 */
+      tiliMaxVal: number
+      /** @description 当前体力 */
+      tiliVal: number
+      /** @description 当前心力 */
+      xinliVal: number
+      /** @description 心力上限 */
+      xinliMaxVal: number
+      /** @description 当前不肝 */
+      buganVal: number
+    }
     roleBaseInfoVo: {
       /** @description 游历天数 */
       crDay: number
@@ -65,10 +89,30 @@ export interface GameInfoResponse extends BaseApiReponse {
   }
 }
 
-export interface EquipDetailItem {
-  /** @description 装备ID */
-  no: string
+export interface EquipDetailItem extends EquipItem {
+  idx: string
+  /** 耐久 */
+  durability: number
+  /** 套装 */
+  suffix: EquipSuitType
+  /** 主词条 */
+  attrs: EquipPropItem['data'][]
+  /** 调率词条 */
+  affixes: EquipTiaolvItem['data'][]
 }
+
+export type EquipTiaolvInfoType = [
+  /** 词条ID */
+  number,
+  /** 数值 */
+  number,
+  /** 占比 */
+  number,
+  /** 1:蓝 2:紫 3:金 */
+  number,
+  /** 推荐词条 */
+  boolean
+]
 
 export interface CumulativeFigResponse extends BaseApiReponse {
   data: {

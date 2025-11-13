@@ -5,7 +5,6 @@ export interface ConfigType {
   database: DataBaseConfig
   [CommandEnum.DailySign]: DailySignConfig
   [CommandEnum.DailySignTask]: DailySignTaskConfig
-  [CommandEnum.showGameInfo]: GameInfoConfig
 }
 
 export interface DataBaseConfig {

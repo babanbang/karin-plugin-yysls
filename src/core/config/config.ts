@@ -19,9 +19,6 @@ const DefaultConfig: ConfigType = {
     cron: '0 30 8 * * *',
     globalPush: ['Master'],
     permission: DailySignTaskPermission.Everyone
-  },
-  [CommandEnum.showGameInfo]: {
-    pagination: true
   }
 }
 

@@ -30,7 +30,8 @@ const DefaultPushListIgnore: PushListIgnoreType = {
     defaultConfigItem: {
       defaultConfig: {
         scene: 'group', peer: '', name: '', subPeer: undefined
-      }
+      },
+      required: ['scene', 'peer']
     }
   }
 }

@@ -9,7 +9,7 @@ import { common, renderTemplate } from '@/utils'
 import karin, { segment } from 'node-karin'
 
 export const showGameInfo = karin.command(
-  Command.getCommand(CommandEnum.showGameInfo, ''),
+  Command.getCommand(CommandEnum.showGameInfo, '$'),
   async (e, next) => {
     if (!CommandCfg.get<boolean>(`${CommandEnum.Login}.enable`)) next()
 
@@ -40,6 +40,7 @@ export const showGameInfo = karin.command(
           club: GameInfoResponse['data']['clubName']
           crDay: GameInfoResponse['data']['roleBaseInfoVo']['crDay']
           avatar: GameInfoResponse['data']['roleAvatar']
+          status: Record<'xinli' | 'tili' | 'bugan', { now: number; max: number }>
         },
         tips: { lable: string; value: string | number }[]
       }
@@ -50,6 +51,7 @@ export const showGameInfo = karin.command(
         qishu: GameInfoResponse['data']['battleQs']
       }
       exploreInfo: { area: string; level: number; score: number; name: string; value: number }[]
+      equipInfo: GameInfoResponse['data']['wearEquipsDetailed']
       pagination: boolean
     } = {
       baseInfo: {
@@ -61,6 +63,11 @@ export const showGameInfo = karin.command(
           club: gameInfo.data.clubName,
           crDay: gameInfo.data.roleBaseInfoVo.crDay,
           avatar: gameInfo.data.roleAvatar,
+          status: {
+            xinli: { now: gameInfo.data.merge1Vo.xinliVal, max: gameInfo.data.merge1Vo.xinliMaxVal },
+            tili: { now: gameInfo.data.merge1Vo.tiliVal, max: gameInfo.data.merge1Vo.tiliMaxVal },
+            bugan: { now: gameInfo.data.merge1Vo.buganVal, max: 23000 }
+          }
         },
         tips: [{
           lable: '游戏时长', value: (gameInfo.data.onlineTime / 3600).toFixed(1) + 'h'
@@ -97,6 +104,7 @@ export const showGameInfo = karin.command(
       }, {
         area: '不见山', ...common.getExploreLevel(gameInfo.data.scores61)!
       }],
+      equipInfo: gameInfo.data.wearEquipsDetailed,
       pagination: Cfg.get<boolean>(`${CommandEnum.showGameInfo}.pagination`)
     }
 

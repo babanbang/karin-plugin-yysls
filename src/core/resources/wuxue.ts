@@ -1,21 +1,21 @@
 import { dir } from '@/dir'
-import { ImageMapType, WuxueItem } from '@/types'
+import { WuxueImageType, WuxueItem } from '@/types/core/resources'
 import { existsSync, logger, readJsonSync, watch } from 'node-karin'
 import path from 'node:path'
 
 const liupaiMap = new Map([
-  ['10000', ''], ['10206', ''],
-  ['10103', ''], ['10205', ''], ['10101', '影'], ['10201', '影'], ['10102', '虹'], ['10202', '虹'],
-  ['10305', ''], ['20600', ''], ['10301', '霖'], ['20602', '霖'], ['10302', '玉'], ['20601', '玉'],
-  ['20400', ''], ['20401', '威'], ['20103', '威'], ['20402', '钧'], ['20801', '钧'],
-  ['20500', ''], ['20700', ''], ['20501', '风'], ['20701', '风'], ['20603', '尘'], ['20702', '尘']
+  [10000, ''], [10206, ''],
+  [10103, ''], [10205, ''], [10101, '影'], [10201, '影'], [10102, '虹'], [10202, '虹'],
+  [10305, ''], [20600, ''], [10301, '霖'], [20602, '霖'], [10302, '玉'], [20601, '玉'],
+  [20400, ''], [20401, '威'], [20103, '威'], [20402, '钧'], [20801, '钧'],
+  [20500, ''], [20700, ''], [20501, '风'], [20701, '风'], [20603, '尘'], [20702, '尘']
 ])
 
 let First = true
 
 export const Wuxue = new class {
   listPath = path.join(dir.ResourcesDir, 'images', 'wuxue', 'list.json')
-  #map = new Map<string, WuxueItem>()
+  #map = new Map<number, WuxueItem>()
 
   load () {
     if (!existsSync(this.listPath)) {
@@ -24,21 +24,23 @@ export const Wuxue = new class {
       First = false
     }
 
-    const wuxueData: ImageMapType[] = readJsonSync(this.listPath) || []
+    const wuxueData: WuxueImageType[] = readJsonSync(this.listPath) || []
     this.#map.clear()
 
     wuxueData.forEach(item => {
-      const liupai = liupaiMap.get(item.id)
-      if (!liupai) {
+      const id = Number(item.id)
+
+      if (!liupaiMap.has(id)) {
         logger.error(`武学(liupaiMap:${item.id})需要更新，请提交issue`)
       }
 
-      this.#map.set(item.id, {
-        id: item.id,
+      const liupai = liupaiMap.get(id)
+      this.#map.set(id, {
+        id,
         name: item.name!,
-        image: `images/wuxue/${item.id}.png`,
+        image: `images/wuxue/${id}.png`,
         liupai,
-        liupai_icon: `image/liupai/${liupai}.png`
+        liupai_icon: `images/liupai/${liupai}.png`
       })
     })
 
@@ -51,10 +53,9 @@ export const Wuxue = new class {
     }
   }
 
-  get (_id: string, level: number): WuxueItem & { level: number } {
+  get (_id: number, level: number): WuxueItem & { level: number } {
     First && this.load()
-
-    const id = String(_id)
+    const id = Number(_id)
 
     const wuxue = this.#map.get(id)
     if (!wuxue) {
