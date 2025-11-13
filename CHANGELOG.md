@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.6](https://github.com/babanbang/karin-plugin-yysls/compare/v1.1.5...v1.1.6) (2025-11-13)
+
+
+### Bug Fixes
+
+* 信息查询添加装备信息 ([b96acaa](https://github.com/babanbang/karin-plugin-yysls/commit/b96acaae05714bb06b53b73fae37cef9508c0778))
+
 ## [1.1.5](https://github.com/babanbang/karin-plugin-yysls/compare/v1.1.4...v1.1.5) (2025-10-22)
 
 
