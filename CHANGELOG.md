@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.5](https://github.com/babanbang/karin-plugin-yysls/compare/v1.1.4...v1.1.5) (2025-10-22)
+
+
+### Bug Fixes
+
+* 优化部分图片路径 ([4ee4308](https://github.com/babanbang/karin-plugin-yysls/commit/4ee43088a1c81a0de636dd1fefbd0256073d6fdb))
+
 ## [1.1.4](https://github.com/babanbang/karin-plugin-yysls/compare/v1.1.3...v1.1.4) (2025-10-22)
 
 
